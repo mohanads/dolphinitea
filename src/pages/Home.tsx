@@ -1,0 +1,32 @@
+import { h } from 'preact';
+import Layout from '../components/Layout';
+
+export default () => {
+    const onAuthClick = () => {
+        window.addEventListener('message', function (event) {
+            if (event.data.type === 'oauth2') {
+                window.location.assign('/guilds');
+            }
+        }, { once: true });
+
+        window.open(process.env.DISCORD_AUTH_LINK, '_blank', 'width=600,height=900');
+    };
+
+    return (
+        <Layout>
+            <div className="container mx-auto px-6 py-4 flex-grow flex flex-col">
+                <div className="m-auto">
+                    <button
+                        onClick={onAuthClick}
+                        className="flex rounded-lg bg-blue-500 px-3 py-2 font-semibold text-white"
+                    >
+                        <img className="h-7 text-white" src="/public/discord.svg" />
+                        <span className="ml-2">
+                            Login with Discord
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </Layout>
+    );
+};
