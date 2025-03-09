@@ -1,11 +1,12 @@
 import { h } from 'preact';
 import Layout from '../components/Layout';
+import { route } from 'preact-router';
 
 export default () => {
     const onAuthClick = () => {
         window.addEventListener('message', function (event) {
             if (event.data.type === 'oauth2') {
-                window.location.assign('/guilds');
+                route('/guilds');
             }
         }, { once: true });
 

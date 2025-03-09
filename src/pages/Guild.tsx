@@ -58,16 +58,16 @@ export default () => {
 
     return (
         <Layout>
-            <nav className="bg-white text-sm font-medium text-center text-gray-500 border-b border-gray-200">
-                <div className="container px-6 mx-auto flex-grow flex flex-col">
-                    <ul className="flex flex-wrap gap-6">
+            <nav className="bg-white text-sm font-medium text-center text-gray-600 shadow">
+                <div className="container px-6 mx-auto flex-grow flex flex-col overflow-auto no-scrollbar">
+                    <ul className="flex gap-2">
                         {Object.values(Tab).map((tab) => (
                             <li>
                                 <button
                                     disabled={disabled[tab]}
                                     onClick={() => !disabled[tab] && activateTab(tab)}
                                     type="button"
-                                    className={`py-4 hover:text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed ${tab !== activeTab ? '' : 'text-blue-600! active'}`}
+                                    className={`whitespace-nowrap p-4 transition border-b-2 disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-transparent ${tab !== activeTab ? 'border-transparent hover:border-gray-600' : 'text-blue-600! active border-blue-600'}`}
                                 >
                                     {tab}
                                 </button>

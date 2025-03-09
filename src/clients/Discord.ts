@@ -65,17 +65,19 @@ export class DiscordClient {
         }
 
         logger.info('Attempting to fetch user details');
-        const response = await (await fetch(`${this.apiUrl}/oauth2/@me`, {
+        const response = await fetch(`${this.apiUrl}/oauth2/@me`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
-        })).json() as DiscordUser;
-        logger.info('Fetched user details', {
-            userId: response.user.id,
-            userName: response.user.username,
         });
-        return response;
+        const data = await response.json() as DiscordUser & Record<string, unknown>;
+        logger.info('Fetched user details', {
+            userId: data.user.id,
+            userName: data.user.username,
+        });
+        const { user: { id, global_name, username } } = data;
+        return { id, global_name, username };
     };
 
     async getUserGuilds(accessToken: string) {
@@ -91,15 +93,17 @@ export class DiscordClient {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        const data = await response.json() as DiscordGuild[] | DiscordError;
+        const data = await response.json() as (DiscordGuild[] & Record<string, unknown>) | DiscordError;
         if ('retry_after' in data) {
             logger.error('Failed to fetch user Guilds', {
                 errorMessage: data.message,
             });
             return undefined;
         }
+        console.log(data);
+        const guilds = data.map(({ id, name, icon }) => ({ id, name, icon }));
         logger.info('Fetched user guilds');
-        return data;
+        return guilds;
     };
 
     async getBotGuilds() {
@@ -134,18 +138,18 @@ export interface DiscordUser {
     user: {
         id: string;
         username: string;
-        avatar?: string | null;
-        discriminator?: string;
-        public_flags?: number;
-        flags?: number;
-        banner: null;
-        accent_color?: null;
         global_name: string;
-        avatar_decoration_data?: null;
-        collectibles?: null;
-        banner_color?: null;
-        clan?: null;
-        primary_guild?: null;
+        // avatar?: string | null;
+        // discriminator?: string;
+        // public_flags?: number;
+        // flags?: number;
+        // banner: null;
+        // accent_color?: null;
+        // avatar_decoration_data?: null;
+        // collectibles?: null;
+        // banner_color?: null;
+        // clan?: null;
+        // primary_guild?: null;
     }
 }
 
@@ -153,11 +157,11 @@ export interface DiscordGuild {
     id: string;
     name: string;
     icon: string;
-    banner: string;
-    owner: boolean;
-    permissions: number;
-    permissions_new: string;
-    features: string[];
+    // banner: string;
+    // owner: boolean;
+    // permissions: number;
+    // permissions_new: string;
+    // features: string[];
 }
 
 export interface DiscordError {

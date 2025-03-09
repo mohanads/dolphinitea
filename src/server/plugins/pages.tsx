@@ -48,8 +48,8 @@ export default () => new Elysia()
     })
     .get('/', async (context) => {
         context.set.headers = { 'Content-Type': 'text/html' };
-        const { sessionToken, user } = context.session;
-        const state = { sessionToken, user };
+        const { sessionToken, user, userGuilds } = context.session;
+        const state = { sessionToken, user, guilds: userGuilds };
         return render(
             <HtmlTemplate envVars={exposedEnvVars} state={state}>
                 <App url={context.request.url} state={state} />
@@ -61,15 +61,15 @@ export default () => new Elysia()
             const auth = await DiscordClient.consumeAuthCode(context.query.code);
             logger.info("Consumed user's auth code");
 
-            const user = (await DiscordClient.getUser(auth.access_token)).user;
+            const user = await DiscordClient.getUser(auth.access_token);
             context.session.user = user;
             context.session.discordAccessToken = auth.access_token;
             context.session.discordRefreshToken = auth.refresh_token;
             await CacheClient.set(context.session.sessionToken, context.session);
             logger.info('Cached Discord user, access & refresh tokens into session');
 
-            const { sessionToken } = context.session;
-            const state = { sessionToken, user };
+            const { sessionToken, userGuilds } = context.session;
+            const state = { sessionToken, user, guilds: userGuilds };
             context.set.headers = { 'Content-Type': 'text/html' };
             return render(
                 <HtmlTemplate envVars={exposedEnvVars} state={state}>
@@ -186,8 +186,8 @@ export default () => new Elysia()
         const guildConfig = await SupabaseClient.getGuildConfigs(id);
         const userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
 
-        const { sessionToken, user } = context.session;
-        const state = { sessionToken, user, guild: userGuild, guildConfig };
+        const { sessionToken, user, userGuilds } = context.session;
+        const state = { sessionToken, user, guilds: userGuilds, guild: userGuild, guildConfig };
         context.set.headers = { 'Content-Type': 'text/html' };
         return render(
             <HtmlTemplate envVars={exposedEnvVars} state={state}>

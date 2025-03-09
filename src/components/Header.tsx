@@ -1,20 +1,21 @@
 import { useContext } from 'preact/hooks';
 import { State } from '../state';
 import { i18n } from '@lingui/core';
+import { route } from 'preact-router';
 
 export default () => {
     const state = useContext(State);
 
     const onLogoutClick = async () => {
         await fetch('/logout', { method: 'PUT' });
-        window.location.assign('/');
+        route('/');
     };
 
     return (
         <header className='bg-white sticky top-0 shadow'>
             <nav className='container flex flex-wrap items-center justify-between mx-auto px-6 py-4'>
                 <a
-                    href='/'
+                    href={state.user ? '/guilds' : '/'}
                     className='flex items-center space-x-3 rtl:space-x-reverse'
                 >
                     <span className='self-center text-2xl whitespace-nowrap'>
