@@ -1,0 +1,1 @@
+/*eslint-disable*/import type{Messages}from"@lingui/core";export const messages=JSON.parse("{\"Configure your Guild\":[\"配置您的公会\"],\"Logout\":[\"登出\"],\"Follow us\":[\"关注我们\"],\"Legal\":[\"法律信息\"],\"Privacy Policy\":[\"隐私政策\"],\"Terms & Conditions\":[\"条款和条件\"],\"Hello, world!\":[\"Hello, world!\"]}")as Messages;

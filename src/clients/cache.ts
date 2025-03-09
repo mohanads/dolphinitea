@@ -1,5 +1,6 @@
 import { createClient } from 'redis';
 import * as Errors from '../errors';
+import { logger } from '../logger';
 
 export type SerializablePrimitive = string | number | boolean;
 export type SerializableArray = string[] | number[] | boolean[]
@@ -22,7 +23,7 @@ export class CacheClient {
                 url: `redis://${this.username}:${this.password}@${this.host}:${this.port}`
             });
         } else {
-            console.debug('Initializing cache client directly from env vars');
+            logger.debug('Initializing cache client directly from env vars');
             const { REDIS_USERNAME, REDIS_PASSWORD, REDIS_HOST, REDIS_PORT } = process.env;
 
             if (!REDIS_USERNAME || !REDIS_PASSWORD) throw new Errors.LoadedError(Errors.Code.CACHE_CREDENTIALS_MISSING);
@@ -32,7 +33,7 @@ export class CacheClient {
             this.redis = createClient({ url });
             this.redis.connect();
             this.redis.on('error', (error) => {
-                console.error('Cache client errored', {
+                logger.error('Cache client errored', {
                     errorMessage: error?.message || error,
                 });
             });
@@ -44,7 +45,7 @@ export class CacheClient {
             try {
                 await this.redis.connect();
             } catch (error) {
-                console.error('Failed to connect to cache server', {
+                logger.error('Failed to connect to cache server', {
                     errorMessage: error?.message,
                     errorStack: error?.stack,
                 });

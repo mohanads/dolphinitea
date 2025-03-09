@@ -1,31 +1,36 @@
 import * as Errors from '../errors';
+import { logger } from '../logger';
 
 export class DiscordClient {
     private apiUrl: string;
     private redirectUri: string;
     private clientId: string;
     private clientSecret: string;
+    private botToken: string;
 
     constructor(options?) {
-        const { apiUrl, redirectUri, clientId, clientSecret, } = options || {};
+        const { apiUrl, redirectUri, clientId, clientSecret, botToken, } = options || {};
 
-        if (apiUrl && redirectUri && clientId && clientSecret) {
+        if (apiUrl && redirectUri && clientId && clientSecret && botToken) {
             this.apiUrl = apiUrl;
             this.redirectUri = redirectUri;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
+            this.botToken = this.botToken;
         } else {
-            console.debug('Initializing Discord client directly from env vars');
-            const { DISCORD_API_URL, DISCORD_REDIRECT_URI, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } = process.env;
+            logger.debug('Initializing Discord client directly from env vars');
+            const { DISCORD_API_URL, DISCORD_REDIRECT_URI, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_BOT_TOKEN } = process.env;
 
             if (!DISCORD_API_URL) throw new Errors.LoadedError(Errors.Code.DISCORD_API_URL_MISSING);
             if (!DISCORD_REDIRECT_URI) throw new Errors.LoadedError(Errors.Code.DISCORD_REDIRECT_MISSING);
             if (!DISCORD_CLIENT_ID || !DISCORD_CLIENT_SECRET) throw new Errors.LoadedError(Errors.Code.DISCORD_AUTH_MISSING);
+            if (!DISCORD_BOT_TOKEN) throw new Errors.LoadedError(Errors.Code.DISCORD_BOT_TOKEN_MISSING);
 
             this.apiUrl = DISCORD_API_URL;
             this.redirectUri = DISCORD_REDIRECT_URI;
             this.clientId = DISCORD_CLIENT_ID;
             this.clientSecret = DISCORD_CLIENT_SECRET;
+            this.botToken = DISCORD_BOT_TOKEN;
         }
     }
 
@@ -34,12 +39,11 @@ export class DiscordClient {
      */
     async consumeAuthCode(authCode: string) {
         if (!authCode) {
-            console.warn('No auth code was passed to consume', { authCode });
+            logger.warn('No auth code was passed to consume');
             throw new Errors.LoadedError(Errors.Code.DISCORD_AUTH_CODE_MISSING);
         }
 
-        console.log('Attempting to consume user auth code', { authCode });
-
+        logger.info('Attempting to consume user auth code');
         const response = await (await fetch(`${this.apiUrl}/oauth2/token`, {
             method: 'POST',
             body: new URLSearchParams({
@@ -50,60 +54,70 @@ export class DiscordClient {
                 client_secret: this.clientSecret,
             }),
         })).json() as DiscordAuth;
-
-        console.log('Consumed user auth code', { authCode });
-        console.log(response);
-
+        logger.info('Consumed user auth code');
         return response;
     }
 
     async getUser(accessToken: string) {
         if (!accessToken) {
-            console.warn('No Discord access token passed to make @me API call', { accessToken });
+            logger.warn('No Discord access token passed to make @me API call', { accessToken });
             throw new Errors.LoadedError(Errors.Code.DISCORD_ACCESS_TOKEN_MISSING);
         }
 
-        console.log('Attempting to fetch user details', { accessToken });
-
+        logger.info('Attempting to fetch user details');
         const response = await (await fetch(`${this.apiUrl}/oauth2/@me`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         })).json() as DiscordUser;
-
-        console.log('Fetched user details', {
-            accessToken,
+        logger.info('Fetched user details', {
             userId: response.user.id,
             userName: response.user.username,
         });
-
         return response;
     };
 
-    async getGuilds(accessToken: string) {
+    async getUserGuilds(accessToken: string) {
         if (!accessToken) {
-            console.warn('No Discord access token passed to make @me/guilds API call', { accessToken });
+            logger.warn('No Discord access token passed to make @me/guilds API call', { accessToken });
             throw new Errors.LoadedError(Errors.Code.DISCORD_ACCESS_TOKEN_MISSING);
         }
 
-        console.log('Attempting to fetch user guilds', { accessToken });
+        logger.info('Attempting to fetch user guilds');
         const response = await fetch(`${this.apiUrl}/users/@me/guilds`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-
         const data = await response.json() as DiscordGuild[] | DiscordError;
         if ('retry_after' in data) {
-            console.error('Failed to fetch Discord Guilds', {
-                accessToken,
+            logger.error('Failed to fetch user Guilds', {
                 errorMessage: data.message,
             });
             return undefined;
         }
-        console.log('Fetched user guilds', { accessToken });
+        logger.info('Fetched user guilds');
+        return data;
+    };
+
+    async getBotGuilds() {
+        logger.info('Attempting to fetch bot guilds');
+        const response = await fetch(`${this.apiUrl}/users/@me/guilds`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bot ${this.botToken}`,
+            },
+        });
+        const data = await response.json() as DiscordGuild[] | DiscordError;
+        if ('message' in data) {
+            logger.error('Failed to fetch Bot Guilds', {
+                errorMessage: data.message,
+            });
+            return undefined;
+        }
+        logger.info('Fetched bot guilds');
         return data;
     };
 }

@@ -10,8 +10,6 @@ export default () => {
         window.location.assign('/');
     };
 
-    console.log(i18n.t('Logout'));
-
     return (
         <header className='bg-white sticky top-0 shadow'>
             <nav className='container flex flex-wrap items-center justify-between mx-auto px-6 py-4'>

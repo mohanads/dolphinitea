@@ -18,8 +18,7 @@ export default () => {
                 <div className="m-auto">
                     <button
                         onClick={onAuthClick}
-                        className="flex rounded-lg bg-blue-500 px-3 py-2 font-semibold text-white"
-                    >
+                        className="flex rounded-lg transition bg-blue-500 px-3 py-2 font-semibold text-white hover:scale-103 active:scale-97">
                         <img className="h-7 text-white" src="/public/discord.svg" />
                         <span className="ml-2">
                             Login with Discord

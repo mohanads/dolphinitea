@@ -9,7 +9,7 @@ export interface ISession {
     discordAccessToken?: string;
     discordRefreshToken?: string;
     user?: DiscordUser['user'];
-    guilds?: DiscordGuild[];
+    userGuilds?: DiscordGuild[];
 }
 
 export interface IState {

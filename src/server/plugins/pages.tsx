@@ -2,12 +2,13 @@ import { h } from 'preact';
 import render from 'preact-render-to-string';
 import { Elysia } from 'elysia';
 import CacheClient from '../../clients/cache';
-import DiscordClient from '../../clients/discord';
+import DiscordClient, { DiscordGuild } from '../../clients/discord';
 import SupabaseClient from '../../clients/supabase';
 import HtmlTemplate from '../../components/HtmlTemplate';
 import App from '../../components/App';
 import * as Errors from '../../errors';
 import type { ISession } from '../../state';
+import { logger } from '../../logger';
 
 const exposedEnvVars: Record<string, string | number | boolean> = [
     'DISCORD_AUTH_LINK',
@@ -24,24 +25,24 @@ export default () => new Elysia()
             const { sessionToken } = context.cookie;
 
             if (!sessionToken.value) {
-                console.log('New user w/o session token');
+                logger.info('New user w/o session token');
                 const session = { sessionToken: Bun.randomUUIDv7() };
                 sessionToken.set({ value: session.sessionToken });
-                console.log('Generated session token for new user');
+                logger.info('Generated session token for new user');
                 await CacheClient.set(session.sessionToken, session);
-                console.log('Successfully cached session token');
+                logger.info('Successfully cached session token');
                 return { session };
             }
 
-            console.log('Existing user w/ session token');
+            logger.info('Existing user w/ session token');
             let session = await CacheClient.get<ISession>(sessionToken.value);
             if (!session) {
-                console.warn('Received a Session Token, but session wasn not cached');
+                logger.warn('Received a Session Token, but session wasn not cached');
                 session = { sessionToken: sessionToken.value };
                 await CacheClient.set(sessionToken.value, session);
-                console.log('Re-cached the session using the received session token');
+                logger.info('Re-cached the session using the received session token');
             }
-            console.log('Resolved session from cache');
+            logger.info('Resolved session from cache');
             return { session };
         });
     })
@@ -58,14 +59,14 @@ export default () => new Elysia()
     .get('/oauth2', async (context) => {
         try {
             const auth = await DiscordClient.consumeAuthCode(context.query.code);
-            console.log("Consumed user's auth code");
+            logger.info("Consumed user's auth code");
 
             const user = (await DiscordClient.getUser(auth.access_token)).user;
             context.session.user = user;
             context.session.discordAccessToken = auth.access_token;
             context.session.discordRefreshToken = auth.refresh_token;
             await CacheClient.set(context.session.sessionToken, context.session);
-            console.log('Cached Discord user, access & refresh tokens into session');
+            logger.info('Cached Discord user, access & refresh tokens into session');
 
             const { sessionToken } = context.session;
             const state = { sessionToken, user };
@@ -76,19 +77,78 @@ export default () => new Elysia()
                 </HtmlTemplate>
             );
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             return error;
         }
     })
     .get('/guilds', async (context) => {
         try {
-            const guilds = await DiscordClient.getGuilds(context.session.discordAccessToken);
-            context.session.guilds = guilds;
-            await CacheClient.set(context.session.sessionToken, context.session);
-            console.log("Fetched user's guilds and cached them");
+            let userGuilds = context.session.userGuilds;
+            let botGuilds: DiscordGuild[] | undefined;
+            let botGuildIds: Record<DiscordGuild['id'], boolean> | undefined = {};
+            let displayGuilds: DiscordGuild[] = [];
 
+            /**
+             * Pull the user's Guilds. Either from API or from Cache.
+             */
+            if (!userGuilds) {
+                // TODO: send error back to display
+                if (!context.session.discordAccessToken) {
+                    const { sessionToken, user } = context.session;
+                    const state = { sessionToken, user };
+                    context.set.headers = { 'Content-Type': 'text/html' };
+                    return render(
+                        <HtmlTemplate envVars={exposedEnvVars} state={state}>
+                            <App url={context.request.url} state={state} />
+                        </HtmlTemplate>
+                    );
+                }
+                userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken);
+                // TODO: send error back to display
+                if (!userGuilds) {
+                    const { sessionToken, user } = context.session;
+                    const state = { sessionToken, user };
+                    context.set.headers = { 'Content-Type': 'text/html' };
+                    return render(
+                        <HtmlTemplate envVars={exposedEnvVars} state={state}>
+                            <App url={context.request.url} state={state} />
+                        </HtmlTemplate>
+                    );
+                }
+                context.session.userGuilds = userGuilds;
+                await CacheClient.set(context.session.sessionToken, context.session);
+                logger.info("Fetched user's guilds and cached them");
+            }
+
+            /**
+             * Pull the Bot's Guilds. Either from API or from Cache.
+             */
+            botGuildIds = await CacheClient.get(':BOT_GUILDS_IDS');
+            if (!botGuildIds) {
+                botGuildIds = {};
+                botGuilds = await DiscordClient.getBotGuilds();
+                // TODO: send error back to display
+                if (!botGuilds) {
+                    const { sessionToken, user } = context.session;
+                    const state = { sessionToken, user };
+                    context.set.headers = { 'Content-Type': 'text/html' };
+                    return render(
+                        <HtmlTemplate envVars={exposedEnvVars} state={state}>
+                            <App url={context.request.url} state={state} />
+                        </HtmlTemplate>
+                    );
+                }
+                botGuilds.forEach((botGuild) => botGuildIds![botGuild.id] = true);
+                await CacheClient.set(":BOT_GUILDS_IDS", botGuildIds);
+                logger.info("Fetched bot's guilds IDs and cached them");
+            }
+
+            /**
+             * Union user's Guilds + Bot's Guilds for display.
+             */
+            displayGuilds = userGuilds.filter((userGuild) => botGuildIds[userGuild.id])
             const { sessionToken, user } = context.session;
-            const state = { sessionToken, user, guilds };
+            const state = { sessionToken, user, guilds: displayGuilds };
             context.set.headers = { 'Content-Type': 'text/html' };
             return render(
                 <HtmlTemplate envVars={exposedEnvVars} state={state}>
@@ -96,27 +156,27 @@ export default () => new Elysia()
                 </HtmlTemplate>
             );
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             return error;
         }
     })
     .get('/guilds/:id', async (context) => {
         const { id } = context.params;
 
-        if (!context.session.guilds) {
-            console.warn('User\'s Guilds are not loaded for Config page', {
+        if (!context.session.userGuilds) {
+            logger.warn('User Guilds are not loaded for Config page', {
                 userId: context.session.user?.id,
                 guildId: id,
             });
-            const guilds = await DiscordClient.getGuilds(context.session.discordAccessToken);
-            context.session.guilds = guilds;
+            const userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken!);
+            context.session.userGuilds = userGuilds;
             await CacheClient.set(context.session.sessionToken, context.session);
-            console.log("Fetched user's guilds and cached them for Config");
+            logger.info("Fetched user's guilds and cached them for Config");
         }
 
-        const isUserInGuild = context.session.guilds?.find((guild) => guild.id === id);
+        const isUserInGuild = context.session.userGuilds?.find((guild) => guild.id === id);
         if (!isUserInGuild) {
-            console.warn('User tried accessing unauthorized guild', {
+            logger.warn('User tried accessing unauthorized guild', {
                 userId: context.session.user?.id,
                 guildId: id,
             });
@@ -124,10 +184,10 @@ export default () => new Elysia()
         }
 
         const guildConfig = await SupabaseClient.getGuildConfigs(id);
-        const guild = context.session.guilds?.find((guild) => guild.id === id);
+        const userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
 
         const { sessionToken, user } = context.session;
-        const state = { sessionToken, user, guild, guildConfig };
+        const state = { sessionToken, user, guild: userGuild, guildConfig };
         context.set.headers = { 'Content-Type': 'text/html' };
         return render(
             <HtmlTemplate envVars={exposedEnvVars} state={state}>

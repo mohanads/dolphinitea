@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import * as Errors from '../errors';
 import type { Database } from '../database.types';
+import { logger } from '../logger';
 
 type Tables = Database['public']['Tables'];
 
@@ -24,7 +25,7 @@ export class SupabaseClient {
             this.apiUrl = apiUrl;
             this.apiKey = apiKey;
         } else {
-            console.debug('Initializing Supabase client directly from env vars');
+            logger.debug('Initializing Supabase client directly from env vars');
             const { SUPABASE_API_URL, SUPABASE_API_KEY } = process.env;
 
             if (!SUPABASE_API_URL) throw new Errors.LoadedError(Errors.Code.DISCORD_API_URL_MISSING);
@@ -38,7 +39,7 @@ export class SupabaseClient {
 
     async getGuildConfigs(guildId: string): Promise<SupabaseGuildConfig | undefined> {
         if (!guildId) {
-            console.error('Supabase Guild ID missing for fetching', {
+            logger.error('Supabase Guild ID missing for fetching', {
                 guildId,
             });
             throw new Errors.LoadedError(Errors.Code.SUPABASE_GUILD_ID_MISSING);
@@ -49,18 +50,17 @@ export class SupabaseClient {
             .select(`
                 id::text,
                 guild_id::text,
-                amp:amp_configuration (
-                    controller_url,
-                    bot_password,
-                    bot_username,
-                    created_at
-                )
+                amp:amp_configuration (controller_url, bot_password, bot_username, created_at)
+                starboard:starboard_configuration (channel_name, created_at, reaction, required_reactions, updated_at)
+                memberActivity:member_activity_configuration (create_vc_channel_name, created_at, in_voice_channel_name, member_count_channel_name, updated_at)
+                poe2Registration:poe2_registration_configuration (allowed_maximum_reports, approved_dm_message, approved_dm_title, channel_embed_footer, channel_embed_message, channel_embed_title, channel_url, created_at, delayed_dm_message, delayed_dm_title, notification_channel_url, utility_role_id)
+                featureFlags:feature_flag_configuration (create_vc_channel_name, created_at, in_voice_channel_name, member_count_channel_name, updated_at)
             `)
             .eq('guild_id', guildId as any)
             .maybeSingle();
 
         if (error) {
-            console.error('Supabase failed to get Guild configs', {
+            logger.error('Supabase failed to get Guild configs', {
                 errorMessage: error?.message || error,
             });
             throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);

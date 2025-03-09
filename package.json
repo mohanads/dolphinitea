@@ -3,8 +3,7 @@
     "version": "1.0.0",
     "main": "build/server/index.js",
     "scripts": {
-        "start": "bun build/server/index.js",
-        "dev": "bun --watch src/server/index.tsx",
+        "start": "bun -r newrelic src/server/index.tsx",
         "build:css": "bunx @tailwindcss/cli -i ./src/index.css -o ./public/index.css --watch",
         "build:client": "bun build src/client.tsx --outdir=public --watch",
         "build:locale:extract": "lingui extract",
@@ -16,6 +15,8 @@
         "@elysiajs/static": "^1.2.0",
         "@supabase/supabase-js": "^2.49.1",
         "elysia": "^1.2.24",
+        "newrelic": "^12.15.0",
+        "pino": "^9.6.0",
         "preact": "^10.26.3",
         "preact-render-to-string": "^6.5.13",
         "preact-router": "^4.1.2",
