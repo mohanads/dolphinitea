@@ -48,8 +48,8 @@ export default () => new Elysia()
     })
     .get('/', async (context) => {
         context.set.headers = { 'Content-Type': 'text/html' };
-        const { sessionToken, user, userGuilds } = context.session;
-        const state = { sessionToken, user, guilds: userGuilds };
+        const { sessionToken, user, displayGuilds } = context.session;
+        const state = { sessionToken, user, guilds: displayGuilds };
         return render(
             <HtmlTemplate envVars={exposedEnvVars} state={state}>
                 <App url={context.request.url} state={state} />
@@ -59,7 +59,7 @@ export default () => new Elysia()
     .get('/oauth2', async (context) => {
         try {
             const auth = await DiscordClient.consumeAuthCode(context.query.code);
-            logger.info("Consumed user's auth code");
+            logger.info("Consumed user auth code");
 
             const user = await DiscordClient.getUser(auth.access_token);
             context.session.user = user;
@@ -68,8 +68,8 @@ export default () => new Elysia()
             await CacheClient.set(context.session.sessionToken, context.session);
             logger.info('Cached Discord user, access & refresh tokens into session');
 
-            const { sessionToken, userGuilds } = context.session;
-            const state = { sessionToken, user, guilds: userGuilds };
+            const { sessionToken, displayGuilds } = context.session;
+            const state = { sessionToken, user, guilds: displayGuilds };
             context.set.headers = { 'Content-Type': 'text/html' };
             return render(
                 <HtmlTemplate envVars={exposedEnvVars} state={state}>
@@ -117,7 +117,7 @@ export default () => new Elysia()
                 }
                 context.session.userGuilds = userGuilds;
                 await CacheClient.set(context.session.sessionToken, context.session);
-                logger.info("Fetched user's guilds and cached them");
+                logger.info("Fetched user guilds and cached them");
             }
 
             /**
@@ -140,13 +140,17 @@ export default () => new Elysia()
                 }
                 botGuilds.forEach((botGuild) => botGuildIds![botGuild.id] = true);
                 await CacheClient.set(":BOT_GUILDS_IDS", botGuildIds);
-                logger.info("Fetched bot's guilds IDs and cached them");
+                logger.info("Fetched bot guilds IDs and cached them");
             }
 
             /**
              * Union user's Guilds + Bot's Guilds for display.
              */
             displayGuilds = userGuilds.filter((userGuild) => botGuildIds[userGuild.id])
+            context.session.displayGuilds = displayGuilds;
+            await CacheClient.set(context.session.sessionToken, context.session);
+            logger.info('Cached user display Guilds');
+
             const { sessionToken, user } = context.session;
             const state = { sessionToken, user, guilds: displayGuilds };
             context.set.headers = { 'Content-Type': 'text/html' };
@@ -171,7 +175,7 @@ export default () => new Elysia()
             const userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken!);
             context.session.userGuilds = userGuilds;
             await CacheClient.set(context.session.sessionToken, context.session);
-            logger.info("Fetched user's guilds and cached them for Config");
+            logger.info("Fetched user guilds and cached them for Config");
         }
 
         const isUserInGuild = context.session.userGuilds?.find((guild) => guild.id === id);
@@ -186,8 +190,8 @@ export default () => new Elysia()
         const guildConfig = await SupabaseClient.getGuildConfigs(id);
         const userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
 
-        const { sessionToken, user, userGuilds } = context.session;
-        const state = { sessionToken, user, guilds: userGuilds, guild: userGuild, guildConfig };
+        const { sessionToken, user, displayGuilds } = context.session;
+        const state = { sessionToken, user, guilds: displayGuilds, guild: userGuild, guildConfig };
         context.set.headers = { 'Content-Type': 'text/html' };
         return render(
             <HtmlTemplate envVars={exposedEnvVars} state={state}>

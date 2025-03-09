@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { useContext } from 'preact/hooks';
-import { route } from 'preact-router';
 import { State } from '../state';
 import { DiscordGuild } from '../clients/discord';
 import Layout from '../components/Layout';

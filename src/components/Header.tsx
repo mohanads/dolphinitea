@@ -1,14 +1,13 @@
 import { useContext } from 'preact/hooks';
 import { State } from '../state';
 import { i18n } from '@lingui/core';
-import { route } from 'preact-router';
 
 export default () => {
     const state = useContext(State);
 
     const onLogoutClick = async () => {
         await fetch('/logout', { method: 'PUT' });
-        route('/');
+        window.location.assign('/');
     };
 
     return (

@@ -100,7 +100,6 @@ export class DiscordClient {
             });
             return undefined;
         }
-        console.log(data);
         const guilds = data.map(({ id, name, icon }) => ({ id, name, icon }));
         logger.info('Fetched user guilds');
         return guilds;

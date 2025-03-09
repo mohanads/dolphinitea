@@ -11,6 +11,15 @@
     }
 }
 
+#gradient-canvas {
+    width: 100%;
+    height: 100%;
+    --gradient-color-1: #bddcff;
+    --gradient-color-2: #4682c5;
+    --gradient-color-3: #a5cefa;
+    --gradient-color-4: #ffffff;
+}
+
 html {
     font-family: "Inter", serif;
     font-optical-sizing: auto;

@@ -16,7 +16,6 @@ Object.keys(Locale).forEach((locale) => {
 })
 
 export default () => new Elysia().use((app) => app.derive({ as: 'local' }, (context) => {
-    logger.info(context.request.url);
     if (!context.headers['accept-language']) {
         logger.info('No accept-language header. Activating default locale', { locale: Locale.en });
         i18n.activate("en");

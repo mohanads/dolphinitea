@@ -6,7 +6,7 @@ interface Props {
 
 export default (props: Props) => {
     return (
-        <section className="block max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+        <section className="block w-full lg:max-w-lg bg-white border border-gray-200 rounded-lg shadow">
             <div className="p-6 pb-3">
                 <h2 className="text-lg font-medium tracking-tight text-gray-900">Feature Flags</h2>
             </div>

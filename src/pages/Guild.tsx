@@ -7,6 +7,7 @@ import { i18n } from '@lingui/core';
 import FeatureFlagsConfig from '../components/FeatureFlagsConfig';
 import POE2Config from '../components/POE2Config';
 import StarboardConfig from '../components/StarboardConfig';
+import MemberActivityConfig from '../components/MemberActivityConfig';
 
 enum Tab {
     AMP = 'AMP',
@@ -35,6 +36,8 @@ const TabContent = (props: { tab: Tab | undefined, config: IState['guildConfig']
             return <POE2Config config={props.config.poe2Registration} />;
         case Tab.STARBOARD:
             return <StarboardConfig config={props.config.starboard} />;
+        case Tab.MEMBER_ACTIVITY:
+            return <MemberActivityConfig config={props.config.memberActivity} />;
         default:
             return null as never;
     }

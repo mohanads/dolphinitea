@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "build/server/index.js",
     "scripts": {
-        "start": "bun -r newrelic src/server/index.tsx",
+        "server:start": "bun -r newrelic src/server/index.tsx",
+        "server:dev": "bun --watch src/server/index.tsx",
         "build:css": "bunx @tailwindcss/cli -i ./src/index.css -o ./public/index.css --watch",
         "build:client": "bun build src/client.tsx --outdir=public --watch",
         "build:locale:extract": "lingui extract",
