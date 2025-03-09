@@ -13,6 +13,6 @@ const app = new Elysia()
         .use(pages())
     );
 
-app.listen(8888, (server) => {
+app.listen(process.env.PORT || 80, (server) => {
     logger.info(`Listening on ${server.url}`);
 });

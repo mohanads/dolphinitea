@@ -2,7 +2,7 @@ import { i18n } from '@lingui/core';
 
 export default function () {
     const discordLink = process.env.DISCORD_INVITE_LINK;
-    const githubLink = process.env.GITHUN_LINK;
+    const githubLink = process.env.GITHUB_LINK;
 
     return (
         <footer className="bg-white shadow">
