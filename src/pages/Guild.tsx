@@ -61,7 +61,7 @@ export default () => {
 
     return (
         <Layout>
-            <nav className="bg-white text-sm font-medium text-center text-gray-600 shadow">
+            <nav className="bg-[#1e2124] border-b-2 border-[#424549] text-white text-sm font-medium text-center shadow">
                 <div className="container px-6 mx-auto flex-grow flex flex-col overflow-auto no-scrollbar">
                     <ul className="flex gap-2">
                         {Object.values(Tab).map((tab) => (
@@ -70,7 +70,10 @@ export default () => {
                                     disabled={disabled[tab]}
                                     onClick={() => !disabled[tab] && activateTab(tab)}
                                     type="button"
-                                    className={`whitespace-nowrap p-4 transition border-b-2 disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-transparent ${tab !== activeTab ? 'border-transparent hover:border-gray-600' : 'text-blue-600! active border-blue-600'}`}
+                                    className={`
+                                        whitespace-nowrap p-4 transition border-b-2 disabled:text-gray-400
+                                        disabled:cursor-not-allowed disabled:border-transparent
+                                        ${tab !== activeTab ? 'border-transparent hover:border-[#424549]' : 'text-[#FF6B00]! active border-[#FF6B00]'}`}
                                 >
                                     {tab}
                                 </button>
@@ -92,7 +95,7 @@ export default () => {
                                         src={`https://cdn.discordapp.com/icons/${state.guild.id}/${state.guild.icon}.png`}
                                     ></img>
                                 )}
-                                <div className='flex-auto min-w-0 h-min overflow-hidden tracking-tight text-gray-900 text-left truncate'>
+                                <div className='flex-auto min-w-0 h-min overflow-hidden tracking-tight text-left truncate'>
                                     {state.guild.name}
                                 </div>
                             </div>

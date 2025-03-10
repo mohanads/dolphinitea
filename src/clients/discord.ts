@@ -38,6 +38,7 @@ export class DiscordClient {
      * @param authCode The auth code returned by OAuth2.
      */
     async consumeAuthCode(authCode: string) {
+        logger.info('Consuming auth code');
         if (!authCode) {
             logger.warn('No auth code was passed to consume');
             throw new Errors.LoadedError(Errors.Code.DISCORD_AUTH_CODE_MISSING);
@@ -54,6 +55,7 @@ export class DiscordClient {
                 client_secret: this.clientSecret,
             }),
         })).json() as DiscordAuth;
+        logger.info(response);
         logger.info('Consumed user auth code');
         return response;
     }

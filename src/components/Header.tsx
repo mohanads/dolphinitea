@@ -11,7 +11,7 @@ export default () => {
     };
 
     return (
-        <header className='bg-white sticky top-0 shadow'>
+        <header className='bg-[#1e2124] border-b-2 border-[#424549] text-white sticky top-0 shadow'>
             <nav className='container flex flex-wrap items-center justify-between mx-auto px-6 py-4'>
                 <a
                     href={state.user ? '/guilds' : '/'}

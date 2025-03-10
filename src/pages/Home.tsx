@@ -21,14 +21,14 @@ export default () => {
     }, []);
 
     return (
-        <main className="min-h-screen bg-slate-100 flex flex-col">
+        <main className="min-h-screen bg-[#282b30] text-white flex flex-col">
             <div className="min-h-screen flex flex-col relative">
                 <canvas className="absolute z-0" id="gradient-canvas" data-transition-in />
                 <div className="z-1 container mx-auto px-6 py-4 flex-grow flex flex-col">
-                    <div className="w-full sm:w-md bg-white border border-gray-300 shadow-xl rounded-lg m-auto flex flex-col justify-center px-6 py-18 md:px-8">
+                    <div className="w-full sm:w-md bg-[#424549] text-white shadow-xl rounded-lg m-auto flex flex-col justify-center px-6 py-18 md:px-8">
                         <div>
-                            <h1 className="text-center text-xl font-semibold text-gray-600">InfiniTea</h1>
-                            <h2 className="mt-3 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Login to your account</h2>
+                            <h1 className="text-center text-xl">InfiniTea</h1>
+                            <h2 className="mt-3 text-center text-2xl/9 tracking-tight">Login to your account</h2>
                         </div>
 
                         <div className="mt-6 w-full mx-auto">

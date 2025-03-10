@@ -4,7 +4,7 @@ import Footer from './Footer';
 
 export default ({ children }) => {
     return (
-        <main className="min-h-screen bg-slate-100 flex flex-col">
+        <main className="min-h-screen bg-[#282b30] text-white flex flex-col">
             <div className="min-h-screen flex flex-col">
                 <Header />
                 {children}

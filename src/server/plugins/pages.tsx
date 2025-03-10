@@ -58,6 +58,7 @@ export default () => new Elysia()
     })
     .get('/oauth2', async (context) => {
         try {
+            logger.info("Consuming auth code");
             const auth = await DiscordClient.consumeAuthCode(context.query.code);
             logger.info("Consumed user auth code");
 
