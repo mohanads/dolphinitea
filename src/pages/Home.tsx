@@ -11,34 +11,39 @@ export default () => {
             }
         }, { once: true });
 
-        window.open(process.env.DISCORD_AUTH_LINK, '_blank', 'width=600,height=900');
+        const popupWidth = 600;
+        const popupHeight = 900;
+        const popupTop = (screen.height - popupHeight) / 2;
+        const popupLeft = (screen.width - popupWidth) / 2;
+        let windowFeatures = `width=${popupWidth},height=${popupHeight}`;
+
+        if (popupTop != null && popupLeft != null) {
+            windowFeatures += `,top=${popupTop},left=${popupLeft}`;
+        }
+
+        window.open(process.env.DISCORD_AUTH_LINK, '_blank', windowFeatures);
     };
 
     useEffect(() => {
-        const gradient = new Gradient();
-
-        gradient.initGradient('#gradient-canvas');
+        new Gradient().initGradient('#gradient-canvas');
     }, []);
 
     return (
-        <main className="min-h-screen bg-[#282b30] text-white flex flex-col">
+        <main className="min-h-screen bg-discord-black-80 flex flex-col">
             <div className="min-h-screen flex flex-col relative">
                 <canvas className="absolute z-0" id="gradient-canvas" data-transition-in />
                 <div className="z-1 container mx-auto px-6 py-4 flex-grow flex flex-col">
-                    <div className="w-full sm:w-md bg-[#424549] text-white shadow-xl rounded-lg m-auto flex flex-col justify-center px-6 py-18 md:px-8">
-                        <div>
-                            <h1 className="text-center text-xl">InfiniTea</h1>
-                            <h2 className="mt-3 text-center text-2xl/9 tracking-tight">Login to your account</h2>
-                        </div>
-
-                        <div className="mt-6 w-full mx-auto">
+                    <div className="w-full sm:w-md bg-discord-black-60 shadow-xl rounded-lg m-auto flex flex-col justify-center px-6 py-12 md:px-8 gap-6">
+                        <img className="h-24 mx-auto" src="/public/infinitea.svg" />
+                        <h1 className="text-center text-xl">InfiniTea</h1>
+                        <div className="w-xs mx-auto">
                             <button
                                 onClick={onAuthClick}
                                 type="button"
-                                className="flex transition w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:scale-103 active:scale-97"
+                                className="flex transition w-full justify-center rounded-md bg-discord-blue px-3 py-1.5 text-sm/6 font-semibold shadow-xs hover:scale-103 active:scale-97"
                             >
-                                <img className="h-7 text-white mr-2" src="/public/discord.svg" />
-                                Discord
+                                <img className="h-7 mr-2" src="/public/discord.svg" />
+                                Login via Discord
                             </button>
                         </div>
                     </div>
