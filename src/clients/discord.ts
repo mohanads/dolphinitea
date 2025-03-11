@@ -55,7 +55,6 @@ export class DiscordClient {
                 client_secret: this.clientSecret,
             }),
         })).json() as DiscordAuth;
-        logger.info(response);
         logger.info('Consumed user auth code');
         return response;
     }
@@ -78,8 +77,8 @@ export class DiscordClient {
             userId: data.user.id,
             userName: data.user.username,
         });
-        const { user: { id, global_name, username } } = data;
-        return { id, global_name, username };
+        const { user: { id, global_name, username, banner, accent_color, avatar, avatar_decoration_data } } = data;
+        return { id, global_name, username, banner, accent_color, avatar, avatar_decoration_data };
     };
 
     async getUserGuilds(accessToken: string) {
@@ -102,7 +101,7 @@ export class DiscordClient {
             });
             return undefined;
         }
-        const guilds = data.map(({ id, name, icon }) => ({ id, name, icon }));
+        const guilds = data.map(({ id, name, icon, banner }) => ({ id, name, icon, banner }));
         logger.info('Fetched user guilds');
         return guilds;
     };
@@ -140,13 +139,13 @@ export interface DiscordUser {
         id: string;
         username: string;
         global_name: string;
-        // avatar?: string | null;
+        avatar?: string | null;
+        banner: null;
+        accent_color?: null;
+        avatar_decoration_data?: null;
         // discriminator?: string;
         // public_flags?: number;
         // flags?: number;
-        // banner: null;
-        // accent_color?: null;
-        // avatar_decoration_data?: null;
         // collectibles?: null;
         // banner_color?: null;
         // clan?: null;
@@ -158,7 +157,7 @@ export interface DiscordGuild {
     id: string;
     name: string;
     icon: string;
-    // banner: string;
+    banner: string;
     // owner: boolean;
     // permissions: number;
     // permissions_new: string;
