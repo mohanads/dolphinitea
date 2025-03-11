@@ -11,12 +11,13 @@ export default () => {
     };
 
     return (
-        <header className='bg-[#1e2124] border-b-2 border-[#424549] text-white sticky top-0 shadow'>
+        <header className='bg-discord-black-90 border-b-2 border-discord-black-60 shadow-xl shadow-white/3'>
             <nav className='container flex flex-wrap items-center justify-between mx-auto px-6 py-4'>
                 <a
                     href={state.user ? '/guilds' : '/'}
-                    className='flex items-center space-x-3 rtl:space-x-reverse'
+                    className='flex gap-2 items-center space-x-3 rtl:space-x-reverse'
                 >
+                    <img className="h-4" src="/public/infinitea.svg" />
                     <span className='self-center text-2xl whitespace-nowrap'>
                         InfiniTea
                     </span>
