@@ -5,7 +5,7 @@ export default function () {
     const githubLink = process.env.GITHUB_LINK;
 
     return (
-        <footer className="bg-[#1e2124] text-white shadow">
+        <footer className="bg-discord-black-90">
             <div className="mx-auto container px-6 py-4">
                 <div className="md:flex md:justify-between">
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">

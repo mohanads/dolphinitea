@@ -14,7 +14,7 @@ export default (props: Props) => {
         <button
             onClick={onClick}
             type='button'
-            className='p-4 text-white transition bg-[#36393e] border-2 border-[#FF6B00] rounded-lg shadow-sm hover:bg-[#424549] transition hover:scale-103 active:scale-97'
+            className='p-4 transition bg-discord-black-70 border-2 border-infinitea-orange rounded-lg hover:bg-discord-black-60 transition hover:scale-103 active:scale-97'
         >
             <div className='h-16 flex'>
                 {/* TODO: display missing img placeholder */}
