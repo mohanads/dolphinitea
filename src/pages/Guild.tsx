@@ -96,7 +96,7 @@ export default () => {
                                     )}
                                     <div className='flex flex-col gap-2'>
                                         <div>{i18n.t('Configure')}</div>
-                                        <select id="countries" class="bg-discord-black-60 border border-infinitea-orange text-sm rounded-lg block w-full px-2.5 py-2">
+                                        <select id="countries" className="bg-discord-black-60 border border-infinitea-orange text-sm rounded-lg block w-full px-2.5 py-2">
                                             <option selected>
                                                 {state.guild.name}
                                             </option>
@@ -111,9 +111,7 @@ export default () => {
                         </h1>
                     </div>
                 </div>
-                <div>
-                    <TabContent tab={activeTab} config={state.guildConfig} />
-                </div>
+                <TabContent tab={activeTab} config={state.guildConfig} />
             </div>
         </Layout>
     );

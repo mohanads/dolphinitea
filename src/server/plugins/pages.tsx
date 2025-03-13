@@ -7,8 +7,8 @@ import SupabaseClient from '../../clients/supabase';
 import HtmlTemplate from '../../components/HtmlTemplate';
 import App from '../../components/App';
 import * as Errors from '../../errors';
-import type { ISession } from '../../state';
 import { logger } from '../../logger';
+import type { ISession } from '../../state';
 
 const exposedEnvVars: Record<string, string | number | boolean> = [
     'DISCORD_AUTH_LINK',

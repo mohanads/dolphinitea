@@ -6,8 +6,6 @@ import type { Database } from '../database.types';
 type Tables = Database['public']['Tables'];
 
 export interface SupabaseGuildConfig {
-    id: string;
-    guild_id: string;
     amp?: Pick<Tables['amp_configuration']['Row'], 'controller_url' | 'bot_password' | 'bot_username' | 'created_at'> | null;
     starboard?: Pick<Tables['starboard_configuration']['Row'], 'channel_name' | 'created_at' | 'reaction' | 'required_reactions' | 'updated_at'> | null;
     memberActivity?: Pick<Tables['member_activity_configuration']['Row'], 'create_vc_channel_name' | 'created_at' | 'in_voice_channel_name' | 'member_count_channel_name' | 'updated_at'> | null;
@@ -50,8 +48,6 @@ export class SupabaseClient {
         const { data, error } = await this.supabase
             .from('configuration')
             .select(`
-                id::text,
-                guild_id::text,
                 amp:amp_configuration (controller_url, bot_password, bot_username, created_at),
                 featureFlags:feature_flag_configuration (create_vc, created_at, giveaway, in_voice_count, member_count, navigate, purge, register_poe2, reload, reputation_tracking, starboard, status, temp_message, text_xp, voice_xp),
                 starboard:starboard_configuration (channel_name, created_at, reaction, required_reactions, updated_at),
