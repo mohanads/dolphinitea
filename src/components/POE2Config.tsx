@@ -7,7 +7,7 @@ interface Props {
 export default (props: Props) => {
     return (
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-            <section className="block max-w-full bg-discord-black-70 rounded-lg py-6 flex flex-col gap-4">
+            <section className="block max-w-full bg-discord-black-70 rounded-lg shadow-xl py-6 flex flex-col gap-4">
                 <div className="px-6">
                     <h2 className="text-xl">Channel</h2>
                 </div>
@@ -31,7 +31,7 @@ export default (props: Props) => {
                     </div>
                 </div>
             </section>
-            <section className="block max-w-full bg-discord-black-70 rounded-lg py-6 flex flex-col gap-4">
+            <section className="block max-w-full bg-discord-black-70 rounded-lg shadow-xl py-6 flex flex-col gap-4">
                 <div className="px-6">
                     <h2 className="text-xl">Approval</h2>
                 </div>
@@ -51,7 +51,7 @@ export default (props: Props) => {
                     </div>
                 </div>
             </section>
-            <section className="block max-w-full bg-discord-black-70 rounded-lg py-6 flex flex-col gap-4">
+            <section className="block max-w-full bg-discord-black-70 rounded-lg shadow-xl py-6 flex flex-col gap-4">
                 <div className="px-6">
                     <h2 className="text-xl">Delay</h2>
                 </div>
@@ -67,7 +67,7 @@ export default (props: Props) => {
                     </div>
                 </div>
             </section>
-            <section className="block max-w-full bg-discord-black-70 rounded-lg py-6 flex flex-col gap-4">
+            <section className="block max-w-full bg-discord-black-70 rounded-lg shadow-xl py-6 flex flex-col gap-4">
                 <div className="px-6">
                     <h2 className="text-xl">Other</h2>
                 </div>

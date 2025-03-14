@@ -23,7 +23,7 @@ export default (props: Props) => {
     };
 
     return (
-        <section className="block max-w-full md:max-w-sm bg-discord-black-70 rounded-lg p-6 flex flex-col gap-4">
+        <section className="block max-w-full md:max-w-sm bg-discord-black-70 rounded-lg p-6 shadow-xl flex flex-col gap-4">
             <div>
                 <label for="controllerUrl" className="block mb-2 text-sm font-medium">Controller URL</label>
                 <input value={controllerUrl} onInput={onControllerUrlInput} type="url" id="controllerUrl" className="bg-discord-black-60 text-sm rounded-lg block w-full p-2.5" placeholder="https://example.io" required />

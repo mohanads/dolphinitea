@@ -14,7 +14,7 @@ export default (props: Props) => {
         <button
             onClick={onClick}
             type='button'
-            className='transition bg-discord-black-70 border-2 border-infinitea-orange rounded-lg hover:bg-discord-black-60 transition bg-no-repeat bg-center bg-cover hover:scale-103 active:scale-97'
+            className='transition bg-discord-black-70 border-2 border-infinitea-orange rounded-lg shadow-xl hover:bg-discord-black-60 transition bg-no-repeat bg-center bg-cover hover:scale-103 active:scale-97'
         >
             <div className={`p-4 flex gap-4`}>
                 {/* TODO: display missing img placeholder */}

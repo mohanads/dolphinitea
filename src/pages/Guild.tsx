@@ -82,7 +82,7 @@ export default () => {
                     </ul>
                 </div>
             </nav>
-            <div className="container mx-auto px-6 py-6 flex-grow flex flex-col">
+            <div className="container mx-auto px-6 py-6 flex flex-col">
                 <div className="mb-4">
                     <div className="flex justify-between items-center gap-2">
                         <h1 className='text-2xl font-semibold mb-2'>
