@@ -1,4 +1,3 @@
-import 'newrelic';
 import { Elysia } from 'elysia';
 import { staticPlugin } from '@elysiajs/static';
 import pages from './plugins/pages';

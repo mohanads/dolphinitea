@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "build/server/index.js",
     "scripts": {
-        "server:start": "bun -r newrelic src/server/index.tsx",
+        "server:start": "bun src/server/index.tsx",
         "server:dev": "bun --watch src/server/index.tsx | pino-pretty",
         "build:css": "bunx @tailwindcss/cli -i ./src/index.css -o ./public/index.css",
         "build:client": "bun build src/client.tsx --outdir=public",
@@ -16,7 +16,6 @@
         "@elysiajs/static": "^1.2.0",
         "@supabase/supabase-js": "^2.49.1",
         "elysia": "^1.2.24",
-        "newrelic": "^12.15.0",
         "pino": "^9.6.0",
         "preact": "^10.26.3",
         "preact-render-to-string": "^6.5.13",
