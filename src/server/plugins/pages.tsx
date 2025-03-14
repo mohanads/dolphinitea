@@ -29,17 +29,17 @@ export default () => new Elysia()
                 const session = { sessionToken: Bun.randomUUIDv7() };
                 sessionToken.set({ value: session.sessionToken });
                 logger.info('Generated session token for new user');
-                await CacheClient.set(session.sessionToken, session);
+                await CacheClient.set(`SESSION:${session.sessionToken}`, session);
                 logger.info('Successfully cached session token');
                 return { session };
             }
 
             logger.info('Existing user w/ session token');
-            let session = await CacheClient.get<ISession>(sessionToken.value);
+            let session = await CacheClient.get<ISession>(`SESSION:${sessionToken.value}`);
             if (!session) {
                 logger.warn('Received a Session Token, but session wasn not cached');
                 session = { sessionToken: sessionToken.value };
-                await CacheClient.set(sessionToken.value, session);
+                await CacheClient.set(`SESSION:${sessionToken.value}`, session);
                 logger.info('Re-cached the session using the received session token');
             }
             logger.info('Resolved session from cache');
@@ -66,7 +66,7 @@ export default () => new Elysia()
             context.session.user = user;
             context.session.discordAccessToken = auth.access_token;
             context.session.discordRefreshToken = auth.refresh_token;
-            await CacheClient.set(context.session.sessionToken, context.session);
+            await CacheClient.set(`SESSION:${context.session.sessionToken}`, context.session);
             logger.info('Cached Discord user, access & refresh tokens into session');
 
             const { sessionToken, displayGuilds } = context.session;
@@ -117,14 +117,14 @@ export default () => new Elysia()
                     );
                 }
                 context.session.userGuilds = userGuilds;
-                await CacheClient.set(context.session.sessionToken, context.session);
+                await CacheClient.set(`SESSION:${context.session.sessionToken}`, context.session);
                 logger.info("Fetched user guilds and cached them");
             }
 
             /**
              * Pull the Bot's Guilds. Either from API or from Cache.
              */
-            botGuildIds = await CacheClient.get(':BOT_GUILDS_IDS');
+            botGuildIds = await CacheClient.get(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`);
             if (!botGuildIds) {
                 botGuildIds = {};
                 botGuilds = await DiscordClient.getBotGuilds();
@@ -140,7 +140,12 @@ export default () => new Elysia()
                     );
                 }
                 botGuilds.forEach((botGuild) => botGuildIds![botGuild.id] = true);
-                await CacheClient.set(":BOT_GUILDS_IDS", botGuildIds);
+                /**
+                 * Cache guilds only for a short time so
+                 * that server owners who add InfiniTea to their
+                 * server can quickly log in and start configuring their guild.
+                 */
+                await CacheClient.set(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`, botGuildIds, 5 * 60);
                 logger.info("Fetched bot guilds IDs and cached them");
             }
 
@@ -148,9 +153,7 @@ export default () => new Elysia()
              * Union user's Guilds + Bot's Guilds for display.
              */
             displayGuilds = userGuilds.filter((userGuild) => botGuildIds[userGuild.id])
-            context.session.displayGuilds = displayGuilds;
-            await CacheClient.set(context.session.sessionToken, context.session);
-            logger.info('Cached user display Guilds');
+            logger.info('Calculated user display Guilds');
 
             const { sessionToken, user } = context.session;
             const state = { sessionToken, user, guilds: displayGuilds };
@@ -175,7 +178,7 @@ export default () => new Elysia()
             });
             const userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken!);
             context.session.userGuilds = userGuilds;
-            await CacheClient.set(context.session.sessionToken, context.session);
+            await CacheClient.set(`SESSION:${context.session.sessionToken}`, context.session);
             logger.info("Fetched user guilds and cached them for Config");
         }
 
