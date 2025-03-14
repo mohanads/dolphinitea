@@ -21,8 +21,8 @@ const TabContent = (props: { tab: Tab | undefined, config: IState['guildConfig']
     if (!props.config) {
         return (
             <h2>
-                There aren't any configs available for this Guild, yet. Please check back later.
-                If you think this is incorrect, please let us know.
+                <div>There aren't any configs available for this Guild, yet. Please check back later.</div>
+                <div>If you think this is incorrect, please let us know.</div>
             </h2>
         );
     }

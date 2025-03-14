@@ -55,11 +55,15 @@ export class CacheClient {
         }
     }
 
-    async set<T>(id: string, value: T) {
+    /**
+     * @param id The id of the key you're trying to save.
+     * @param value The corresponding value to the id (key).
+     * @param ttl The default TTL is 1 day (86400 seconds).
+     */
+    async set<T>(id: string, value: T, ttl?: number) {
         await this.ensureConnected();
         const key = `${this.appPrefix}:${id}`;
-        const ttl = 604800; // 1 week in seconds
-        await this.redis.set(key, JSON.stringify(value), { EX: ttl });
+        await this.redis.set(key, JSON.stringify(value), { EX: ttl || 86400 });
         return;
     }
 
