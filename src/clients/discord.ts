@@ -38,14 +38,14 @@ export class DiscordClient {
      * @param authCode The auth code returned by OAuth2.
      */
     async consumeAuthCode(authCode: string) {
-        logger.info('Consuming auth code');
+        logger.debug('Consuming auth code');
         if (!authCode) {
             logger.warn('No auth code was passed to consume');
             throw new Errors.LoadedError(Errors.Code.DISCORD_AUTH_CODE_MISSING);
         }
 
-        logger.info('Attempting to consume user auth code');
-        const response = await (await fetch(`${this.apiUrl}/oauth2/token`, {
+        logger.debug('Attempting to consume user auth code');
+        const response = await fetch(`${this.apiUrl}/oauth2/token`, {
             method: 'POST',
             body: new URLSearchParams({
                 code: authCode,
@@ -54,8 +54,15 @@ export class DiscordClient {
                 client_id: this.clientId,
                 client_secret: this.clientSecret,
             }),
-        })).json() as DiscordAuth;
-        logger.info('Consumed user auth code');
+        });
+        const data = await response.json() as DiscordAuth | DiscordError;
+        if ('retry_after' in data || 'message' in data) {
+            logger.error('Failed to consume auth code', {
+                errorMessage: data.message,
+            });
+            return undefined;
+        }
+        logger.debug('Consumed user auth code');
         return response;
     }
 
@@ -65,15 +72,21 @@ export class DiscordClient {
             throw new Errors.LoadedError(Errors.Code.DISCORD_ACCESS_TOKEN_MISSING);
         }
 
-        logger.info('Attempting to fetch user details');
+        logger.debug('Attempting to fetch user details');
         const response = await fetch(`${this.apiUrl}/oauth2/@me`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        const data = await response.json() as DiscordUser & Record<string, unknown>;
-        logger.info('Fetched user details', {
+        const data = await response.json() as DiscordUser & Record<string, unknown> | DiscordError;
+        if ('retry_after' in data || 'message' in data) {
+            logger.error('Failed to fetch user', {
+                errorMessage: data.message,
+            });
+            return undefined;
+        }
+        logger.debug('Fetched user details', {
             userId: data.user.id,
             userName: data.user.username,
         });
@@ -87,7 +100,7 @@ export class DiscordClient {
             throw new Errors.LoadedError(Errors.Code.DISCORD_ACCESS_TOKEN_MISSING);
         }
 
-        logger.info('Attempting to fetch user guilds');
+        logger.debug('Attempting to fetch user guilds');
         const response = await fetch(`${this.apiUrl}/users/@me/guilds`, {
             method: 'GET',
             headers: {
@@ -95,19 +108,19 @@ export class DiscordClient {
             },
         });
         const data = await response.json() as (DiscordGuild[] & Record<string, unknown>) | DiscordError;
-        if ('retry_after' in data) {
+        if ('retry_after' in data || 'message' in data) {
             logger.error('Failed to fetch user Guilds', {
                 errorMessage: data.message,
             });
             return undefined;
         }
         const guilds = data.map(({ id, name, icon, banner }) => ({ id, name, icon, banner }));
-        logger.info('Fetched user guilds');
+        logger.debug('Fetched user guilds');
         return guilds;
     };
 
     async getBotGuilds() {
-        logger.info('Attempting to fetch bot guilds');
+        logger.debug('Attempting to fetch bot guilds');
         const response = await fetch(`${this.apiUrl}/users/@me/guilds`, {
             method: 'GET',
             headers: {
@@ -115,13 +128,13 @@ export class DiscordClient {
             },
         });
         const data = await response.json() as DiscordGuild[] | DiscordError;
-        if ('message' in data) {
+        if ('retry_after' in data || 'message' in data) {
             logger.error('Failed to fetch Bot Guilds', {
                 errorMessage: data.message,
             });
             return undefined;
         }
-        logger.info('Fetched bot guilds');
+        logger.debug('Fetched bot guilds');
         return data;
     };
 }

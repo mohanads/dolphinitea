@@ -10,7 +10,6 @@ export interface ISession {
     discordRefreshToken?: string;
     user?: DiscordUser['user'];
     userGuilds?: DiscordGuild[];
-    displayGuilds?: DiscordGuild[];
 }
 
 export interface IState {
