@@ -40,10 +40,10 @@ export default () => {
                             <button
                                 onClick={onAuthClick}
                                 type="button"
-                                className="flex transition w-full justify-center rounded-md bg-discord-blue px-3 py-1.5 text-sm/6 font-semibold shadow-xs hover:scale-103 active:scale-97"
+                                className="flex transition w-full justify-center rounded-md bg-discord-blue px-3 py-1.5 font-semibold shadow hover:scale-103 active:scale-97"
                             >
-                                <img className="h-7 mr-2" src="/public/discord.svg" />
-                                Login via Discord
+                                <iconify-icon icon="simple-icons:discord" width="24" height="24"></iconify-icon>
+                                <div className="ml-2">Login via Discord</div>
                             </button>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import Router from 'preact-router';
 import '../index.css';
+import 'iconify-icon';
 import { State, IState, createState } from '../state';
 import Home from '../pages/Home';
 import OAuth from '../pages/OAuth';
