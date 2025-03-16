@@ -3,28 +3,25 @@ import Router from 'preact-router';
 import '../index.css';
 import 'iconify-icon';
 import { State, IState, createState } from '../state';
-import Home from '../pages/Home';
-import OAuth from '../pages/OAuth';
-import Guilds from '../pages/Guilds';
-import Guild from '../pages/Guild';
+import * as Pages from '../pages';
 
 export const pages = [
     {
         route: '/',
-        Component: Home
+        Component: Pages.Home
     },
     {
         route: '/oauth2',
-        Component: OAuth,
+        Component: Pages.OAuth,
     },
     {
         route: '/guilds',
-        Component: Guilds,
+        Component: Pages.Guilds,
     },
     {
         route: '/guilds/:id',
-        Component: Guild,
-    }
+        Component: Pages.Guild,
+    },
 ];
 
 interface Props {
@@ -33,12 +30,18 @@ interface Props {
 }
 
 export default (props: Props) => {
+    const state = createState(props.state);
+
     return (
-        <State.Provider value={createState(props.state)}>
-            <Router url={props.url}>
-                {/* @ts-ignore // TODO: fix the `path` type error */}
-                {pages.map(page => <page.Component path={page.route} />)}
-            </Router>
+        <State.Provider value={state}>
+            {state.error && <Pages.Error />}
+            {state.unauthorized && <Pages.Unauthorized />}
+            {!state.error && !state.unauthorized && (
+                <Router url={props.url}>
+                    {/* @ts-ignore // TODO: fix the `path` type error */}
+                    {pages.map(page => <page.Component path={page.route} />)}
+                </Router>
+            )}
         </State.Provider>
     );
 };

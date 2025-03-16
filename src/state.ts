@@ -18,6 +18,8 @@ export interface IState {
     guilds?: DiscordGuild[];
     guildConfig?: SupabaseGuildConfig;
     guild?: DiscordGuild;
+    error?: string;
+    unauthorized?: boolean;
 }
 
 const getClientData = () => {

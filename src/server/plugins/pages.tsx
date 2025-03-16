@@ -216,7 +216,14 @@ export default () => new Elysia()
                 userId: context.session.user?.id,
                 guildId: id,
             });
-            throw new Errors.LoadedError(Errors.Code.UNAUTHORIZED_CONFIG_ACCESS);
+            const { sessionToken, user } = context.session;
+            const state = { sessionToken, user, guilds: displayGuilds };
+            context.set.headers = { 'Content-Type': 'text/html' };
+            return render(
+                <HtmlTemplate envVars={exposedEnvVars} state={state}>
+                    <App url={context.request.url} state={state} />
+                </HtmlTemplate>
+            );
         }
 
         guildConfig = await SupabaseClient.getGuildConfigs(id);
