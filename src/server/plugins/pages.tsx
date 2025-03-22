@@ -174,7 +174,12 @@ export default () => new Elysia()
             /**
              * Union user's Guilds + Bot's Guilds for display.
              */
-            displayGuilds = userGuilds!.filter((userGuild) => botGuildIds[userGuild.id])
+            displayGuilds = userGuilds!.filter((userGuild) => {
+                return (
+                    botGuildIds[userGuild.id] &&
+                    (BigInt(userGuild.permissions) & BigInt(1 << 3)) === BigInt(1 << 3)
+                );
+            });
             logger.info('Calculated user display Guilds');
 
             const { sessionToken, user } = context.session;
