@@ -11,6 +11,10 @@ export const pages = [
         Component: Pages.Home
     },
     {
+        route: '/privacy',
+        Component: Pages.PrivacyPolicy,
+    },
+    {
         route: '/oauth2',
         Component: Pages.OAuth,
     },

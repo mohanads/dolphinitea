@@ -78,6 +78,16 @@ export default () => new Elysia()
             </HtmlTemplate>
         );
     })
+    .get('/privacy', async (context) => {
+        context.set.headers = { 'Content-Type': 'text/html' };
+        const { sessionToken, user } = context.session;
+        const state = { sessionToken, user };
+        return render(
+            <HtmlTemplate envVars={exposedEnvVars} state={state}>
+                <App url={context.request.url} state={state} />
+            </HtmlTemplate>
+        );
+    })
     .get('/oauth2', async (context) => {
         try {
             logger.info("Consuming auth code");
