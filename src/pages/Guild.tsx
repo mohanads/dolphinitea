@@ -8,6 +8,7 @@ import FeatureFlagsConfig from '../components/FeatureFlagsConfig';
 import POE2Config from '../components/POE2Config';
 import StarboardConfig from '../components/StarboardConfig';
 import MemberActivityConfig from '../components/MemberActivityConfig';
+import { DiscordGuild } from '../clients/discord';
 
 enum Tab {
     FEATURE_FLAGS = 'Feature Flags',
@@ -17,7 +18,7 @@ enum Tab {
     AMP = 'AMP',
 }
 
-const TabContent = (props: { tab: Tab | undefined, config: IState['guildConfig'] | undefined }) => {
+const TabContent = (props: { guildId: string; tab: Tab | undefined, config: IState['guildConfig'] | undefined }) => {
     if (!props.config) {
         return (
             <h2>
@@ -31,7 +32,7 @@ const TabContent = (props: { tab: Tab | undefined, config: IState['guildConfig']
         case Tab.AMP:
             return <AMPConfig config={props.config.amp} />;
         case Tab.FEATURE_FLAGS:
-            return <FeatureFlagsConfig config={props.config.featureFlags} />;
+            return <FeatureFlagsConfig guildId={props.guildId} config={props.config.featureFlags} />;
         case Tab.POE2:
             return <POE2Config config={props.config.poe2Registration} />;
         case Tab.STARBOARD:
@@ -43,7 +44,11 @@ const TabContent = (props: { tab: Tab | undefined, config: IState['guildConfig']
     }
 };
 
-export default () => {
+interface Props {
+    id: DiscordGuild['id'];
+}
+
+export default (props: Props) => {
     const state = useContext(State);
     const disabled = {
         [Tab.FEATURE_FLAGS]: !Boolean(state.guildConfig?.featureFlags),
@@ -85,33 +90,21 @@ export default () => {
             <div className="container mx-auto px-6 py-6 flex flex-col">
                 <div className="mb-4">
                     <div className="flex justify-between items-center gap-2">
-                        <h1 className='text-2xl font-semibold mb-2'>
-                            {state.guild ? (
-                                <div className='flex gap-4'>
-                                    {/* TODO: display missing img placeholder */}
-                                    {state.guild.icon && (
-                                        <img className='size-20 rounded'
-                                            src={`https://cdn.discordapp.com/icons/${state.guild.id}/${state.guild.icon}.png`}
-                                        />
-                                    )}
-                                    <div className='flex flex-col gap-2'>
-                                        <div>{i18n.t('Configure')}</div>
-                                        <select id="countries" className="bg-discord-black-60 border border-infinitea-orange text-sm rounded-lg block w-full px-2.5 py-2">
-                                            <option selected>
-                                                {state.guild.name}
-                                            </option>
-                                            <option value="US">United States</option>
-                                            <option value="CA">Canada</option>
-                                            <option value="FR">France</option>
-                                            <option value="DE">Germany</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            ) : i18n.t('Configure your Guild')}
-                        </h1>
+                        <div className='flex gap-4'>
+                            {/* TODO: display missing img placeholder */}
+                            {state.guild!.icon && (
+                                <img className='size-20 rounded'
+                                    src={`https://cdn.discordapp.com/icons/${state.guild!.id}/${state.guild!.icon}.png`}
+                                />
+                            )}
+                            <div className='flex flex-col'>
+                                <h1 className="text-2xl font-semibold mb-2">{i18n.t('Configure your Guild')}</h1>
+                                <h2 className="text-xl">{state.guild!.name}</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <TabContent tab={activeTab} config={state.guildConfig} />
+                <TabContent guildId={props.id} tab={activeTab} config={state.guildConfig} />
             </div>
         </Layout>
     );

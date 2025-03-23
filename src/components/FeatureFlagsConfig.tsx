@@ -1,6 +1,8 @@
+import { DiscordGuild } from '../clients/discord';
 import { SupabaseGuildConfig } from '../clients/supabase';
 
 interface Props {
+    guildId: DiscordGuild['id'];
     config: SupabaseGuildConfig['featureFlags'];
 }
 
@@ -54,7 +56,22 @@ const FlagConfig = (props: FlagConfigProps) => {
 };
 
 export default (props: Props) => {
-    const onFlagChange = (id: keyof NonNullable<Props['config']>, value: boolean) => { };
+    const onFlagChange = async (id: keyof NonNullable<Props['config']>, value: boolean) => {
+        // TODO: move api calls to an API util (move all calls)
+        await fetch(`/guilds/${props.guildId}/config`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                featureFlags: {
+                    [id]: value,
+                },
+            }),
+        });
+        // TODO: error handling
+        // TODO: success toast?
+    };
 
     const flagConfigs: FlagConfigProps[] = [
         {

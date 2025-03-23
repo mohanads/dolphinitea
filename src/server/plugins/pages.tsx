@@ -348,12 +348,10 @@ export default () => new Elysia()
             );
         }
 
-        const guildConfig = await SupabaseClient.getGuildConfigs(id);
         try {
             await SupabaseClient.updateFeatureFlags(id, context.body.featureFlags);
-            return;
         } catch (error) {
-
+            // TODO: error handling
         }
     }, {
         body: t.Object({
