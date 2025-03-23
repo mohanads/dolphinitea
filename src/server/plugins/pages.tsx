@@ -1,14 +1,16 @@
 import { h } from 'preact';
 import render from 'preact-render-to-string';
-import { Elysia } from 'elysia';
+import { Elysia, t } from 'elysia';
 import CacheClient from '../../clients/cache';
 import DiscordClient, { DiscordGuild } from '../../clients/discord';
-import SupabaseClient, { SupabaseGuildConfig } from '../../clients/supabase';
+import SupabaseClient from '../../clients/supabase';
 import HtmlTemplate from '../../components/HtmlTemplate';
 import App from '../../components/App';
-import * as Errors from '../../errors';
 import { logger } from '../../logger';
+import * as Errors from '../../errors';
 import type { ISession } from '../../state';
+
+// TODO: add guards for auth check and guild perm check
 
 const exposedEnvVars: Record<string, string | number | boolean> = [
     'DISCORD_AUTH_LINK',
@@ -18,6 +20,26 @@ const exposedEnvVars: Record<string, string | number | boolean> = [
     env[envVar] = process.env[envVar];
     return env;
 }, {});
+
+const schemas = {
+    featureFlags: t.Object({
+        create_vc: t.Optional(t.Boolean()),
+        giveaway: t.Optional(t.Boolean()),
+        in_voice_count: t.Optional(t.Boolean()),
+        member_count: t.Optional(t.Boolean()),
+        navigate: t.Optional(t.Boolean()),
+        purge: t.Optional(t.Boolean()),
+        register_poe2: t.Optional(t.Boolean()),
+        reload: t.Optional(t.Boolean()),
+        reputation_tracking: t.Optional(t.Boolean()),
+        starboard: t.Optional(t.Boolean()),
+        status: t.Optional(t.Boolean()),
+        temp_message: t.Optional(t.Boolean()),
+        text_xp: t.Optional(t.Boolean()),
+        voice_xp: t.Optional(t.Boolean()),
+        created_at: t.Optional(t.String())
+    })
+};
 
 export default () => new Elysia()
     .use((app) => {
@@ -196,11 +218,6 @@ export default () => new Elysia()
         }
     })
     .get('/guilds/:id', async (context) => {
-        let guildConfig: SupabaseGuildConfig | undefined;
-        let userGuild: DiscordGuild | undefined;
-        let botGuildIds: Record<DiscordGuild['id'], boolean> | undefined = {};
-        let displayGuilds: DiscordGuild[] = [];
-        let isUserInGuild: boolean | undefined;
         const { id } = context.params;
 
         if (!context.session.userGuilds) {
@@ -214,15 +231,15 @@ export default () => new Elysia()
             logger.info("Fetched user guilds and cached them for Config");
         }
 
-        logger.info('User Guilds')
-        isUserInGuild = !!context.session.userGuilds?.find((guild) => guild.id === id);
+        const userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
+        const isUserInGuild = !!userGuild;
         if (!isUserInGuild) {
             logger.warn('User tried accessing unauthorized guild', {
                 userId: context.session.user?.id,
                 guildId: id,
             });
             const { sessionToken, user } = context.session;
-            const state = { sessionToken, user, guilds: displayGuilds };
+            const state = { sessionToken, user };
             context.set.headers = { 'Content-Type': 'text/html' };
             return render(
                 <HtmlTemplate envVars={exposedEnvVars} state={state}>
@@ -231,10 +248,25 @@ export default () => new Elysia()
             );
         }
 
-        guildConfig = await SupabaseClient.getGuildConfigs(id);
-        userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
-        botGuildIds = await CacheClient.get(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`);
-        displayGuilds = context.session.userGuilds!.filter((userGuild) => botGuildIds[userGuild.id]);
+        const isUserAuthorized = (BigInt(userGuild!.permissions) & BigInt(1 << 3)) === BigInt(1 << 3);
+        if (!isUserAuthorized) {
+            logger.warn('User tried updating Config of a guild without sufficient permissions', {
+                userId: context.session.user?.id,
+                guildId: id,
+            });
+            const { sessionToken, user } = context.session;
+            const state = { sessionToken, user };
+            context.set.headers = { 'Content-Type': 'text/html' };
+            return render(
+                <HtmlTemplate envVars={exposedEnvVars} state={state} >
+                    <App url={context.request.url} state={state} />
+                </HtmlTemplate>
+            );
+        }
+
+        const guildConfig = await SupabaseClient.getGuildConfigs(id);
+        const botGuildIds: Record<DiscordGuild['id'], boolean> | undefined = await CacheClient.get(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`);
+        const displayGuilds = context.session.userGuilds!.filter((userGuild) => botGuildIds[userGuild.id]);
 
         const { sessionToken, user } = context.session;
         const state = { sessionToken, user, guilds: displayGuilds, guild: userGuild, guildConfig };
@@ -244,4 +276,67 @@ export default () => new Elysia()
                 <App url={context.request.url} state={state} />
             </HtmlTemplate>
         );
+    })
+    // TODO: move to new guild.ts file
+    .put('/guilds/:id/config', async (context) => {
+        const { id } = context.params;
+
+        // TODO: validate via JSONSchema
+        if (!('featureFlags' in context.body)) throw new Errors.LoadedError(Errors.Code.INVALID_CONFIG_UPDATE);
+
+        if (!context.session.userGuilds) {
+            logger.warn('User Guilds are not loaded for updating Config', {
+                userId: context.session.user?.id,
+                guildId: id,
+            });
+            const userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken!);
+            context.session.userGuilds = userGuilds;
+            await CacheClient.set(`SESSION:${context.session.sessionToken}`, context.session);
+            logger.info("Fetched user guilds and cached them for Config update");
+        }
+
+        const userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
+        const isUserInGuild = !!userGuild;
+        if (!isUserInGuild) {
+            logger.warn('User tried updating unauthorized Guild for Config update', {
+                userId: context.session.user?.id,
+                guildId: id,
+            });
+            const { sessionToken, user } = context.session;
+            const state = { sessionToken, user };
+            context.set.headers = { 'Content-Type': 'text/html' };
+            return render(
+                <HtmlTemplate envVars={exposedEnvVars} state={state} >
+                    <App url={context.request.url} state={state} />
+                </HtmlTemplate>
+            );
+        }
+
+        const isUserAuthorized = (BigInt(userGuild.permissions) & BigInt(1 << 3)) === BigInt(1 << 3);
+        if (!isUserAuthorized) {
+            logger.warn('User tried updating Config of a guild without sufficient permissions', {
+                userId: context.session.user?.id,
+                guildId: id,
+            });
+            const { sessionToken, user } = context.session;
+            const state = { sessionToken, user };
+            context.set.headers = { 'Content-Type': 'text/html' };
+            return render(
+                <HtmlTemplate envVars={exposedEnvVars} state={state} >
+                    <App url={context.request.url} state={state} />
+                </HtmlTemplate>
+            );
+        }
+
+        const guildConfig = await SupabaseClient.getGuildConfigs(id);
+        try {
+            await SupabaseClient.updateFeatureFlags(id, context.body.featureFlags);
+            return;
+        } catch (error) {
+
+        }
+    }, {
+        body: t.Object({
+            featureFlags: schemas.featureFlags,
+        })
     });

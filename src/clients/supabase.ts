@@ -5,6 +5,8 @@ import type { Database } from '../database.types';
 
 type Tables = Database['public']['Tables'];
 
+const editableFeatureFlags = ['create_vc', 'giveaway', 'in_voice_count', 'member_count', 'navigate', 'purge', 'register_poe2', 'reload', 'reputation_tracking', 'starboard', 'status', 'temp_message', 'text_xp', 'voice_xp'] as const satisfies (keyof Tables['feature_flag_configuration']['Row'])[];
+
 export interface SupabaseGuildConfig {
     amp?: Pick<Tables['amp_configuration']['Row'], 'controller_url' | 'bot_password' | 'bot_username' | 'created_at'> | null;
     starboard?: Pick<Tables['starboard_configuration']['Row'], 'channel_name' | 'created_at' | 'reaction' | 'required_reactions' | 'updated_at'> | null;
@@ -65,6 +67,64 @@ export class SupabaseClient {
         }
 
         return data || undefined;
+    }
+
+    async getGuildConfigId(guildId: string) {
+        const { data, error } = await this.supabase
+            .from('configuration')
+            .select(`id`)
+            .eq('guild_id', guildId as any)
+            .maybeSingle();
+
+        if (error) {
+            logger.warn('Failed to fetch Feature Flags config', {
+                guildId,
+                errorMessage: error?.message || error,
+            });
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
+        }
+
+        return data?.id;
+    }
+
+    async updateFeatureFlags(guildId: string, featureFlags: Partial<NonNullable<SupabaseGuildConfig['featureFlags']>>) {
+        if (!guildId) {
+            logger.error('Supabase Guild ID missing for updating Feature Flags', {
+                guildId,
+            });
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_GUILD_ID_MISSING);
+        }
+
+        const update = <Record<typeof editableFeatureFlags[number], boolean>>{}
+
+        editableFeatureFlags.forEach((flagName) => {
+            if (flagName in featureFlags && typeof featureFlags[flagName] === 'boolean') {
+                update[flagName] = featureFlags[flagName];
+            }
+        });
+
+        const configId = await this.getGuildConfigId(guildId);
+
+        if (!configId) {
+            // TOOD: maybe we want to insert when config doesn't exist
+            logger.warn('Found no Config for Guild during Config update', {
+                guildId,
+            });
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_CONFIG_MISSING);
+        }
+
+        const guildConfigUpdate = await this.supabase
+            .from('feature_flag_configuration')
+            .update(update)
+            .eq('id', configId);
+
+        if (guildConfigUpdate.error) {
+            logger.warn('Failed to update Feature Flags config', {
+                guildId,
+                errorMessage: guildConfigUpdate.error?.message || guildConfigUpdate.error,
+            });
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
+        }
     }
 }
 
