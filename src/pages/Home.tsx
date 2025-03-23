@@ -32,7 +32,7 @@ export default () => {
         <main className="min-h-screen bg-discord-black-80 flex flex-col">
             <div className="min-h-screen flex flex-col relative">
                 <canvas className="absolute z-0" id="gradient-canvas" data-transition-in />
-                <div className="z-1 container mx-auto px-6 py-4 flex-grow flex flex-col">
+                <div className="z-1 container mx-auto p-6 flex-grow flex flex-col">
                     <div className="w-full sm:w-md bg-discord-black-60 shadow-xl rounded-lg m-auto flex flex-col justify-center px-6 py-12 md:px-8 gap-6">
                         <img className="h-24 mx-auto" src="/public/infinitea.svg" />
                         <h1 className="text-center text-xl">InfiniTea</h1>

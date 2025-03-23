@@ -8,7 +8,7 @@ export default () => {
 
     return (
         <Layout>
-            <div className="container mx-auto px-6 py-4 flex-grow flex flex-col">
+            <div className="container mx-auto p-6 flex-grow flex flex-col">
                 <section className="w-full md:w-md bg-discord-black-60 rounded-lg p-6 m-auto flex flex-col gap-6">
                     <h1 className="text-5xl font-semibold">Unauthorized</h1>
                     <div className='text-sm'>Sorry, but your access to this page was denied.</div>

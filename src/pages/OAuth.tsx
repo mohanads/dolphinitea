@@ -14,7 +14,7 @@ export default () => {
 
     return (
         <Layout>
-            <div className="container mx-auto px-6 py-4 flex-grow flex flex-col">
+            <div className="container mx-auto p-6 flex-grow flex flex-col">
                 <div className="m-auto">
                     <div>Hey, {state.user!.global_name}!</div>
                     <div>Sending you to InfiniTea</div>
