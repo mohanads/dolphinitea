@@ -15,6 +15,10 @@ export const pages = [
         Component: Pages.PrivacyPolicy,
     },
     {
+        route: '/terms',
+        Component: Pages.TermsAndConditions,
+    },
+    {
         route: '/oauth2',
         Component: Pages.OAuth,
     },

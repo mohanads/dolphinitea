@@ -5,3 +5,4 @@ export { default as Home } from './Home';
 export { default as OAuth } from './OAuth';
 export { default as Unauthorized } from './Unauthorized';
 export { default as PrivacyPolicy } from './PrivacyPolicy';
+export { default as TermsAndConditions } from './TermsAndConditions';
