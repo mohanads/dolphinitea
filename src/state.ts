@@ -1,6 +1,7 @@
 import { createContext } from 'preact';
 import { DiscordGuild, DiscordUser } from './clients/discord';
 import { SupabaseGuildConfig } from './clients/supabase';
+import { FeatureFlag } from './clients/launchDarkly';
 
 export const CLIENT_DATA_KEY = '__INIT_DATA__';
 
@@ -17,6 +18,7 @@ export interface IState {
     user?: DiscordUser['user'];
     guilds?: DiscordGuild[];
     guildConfig?: SupabaseGuildConfig;
+    featureFlags?: Record<FeatureFlag, unknown>;
     guild?: DiscordGuild;
     error?: string;
     unauthorized?: boolean;

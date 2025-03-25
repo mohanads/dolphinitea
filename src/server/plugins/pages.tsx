@@ -4,6 +4,7 @@ import { Elysia, t } from 'elysia';
 import CacheClient from '../../clients/cache';
 import DiscordClient, { DiscordGuild } from '../../clients/discord';
 import SupabaseClient from '../../clients/supabase';
+import LaunchDarklyClient from '../../clients/launchDarkly';
 import HtmlTemplate from '../../components/HtmlTemplate';
 import App from '../../components/App';
 import { logger } from '../../logger';
@@ -284,12 +285,12 @@ export default () => new Elysia()
             );
         }
 
-        const guildConfig = await SupabaseClient.getGuildConfigs(id);
-        const botGuildIds: Record<DiscordGuild['id'], boolean> | undefined = await CacheClient.get(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`);
-        const displayGuilds = context.session.userGuilds!.filter((userGuild) => botGuildIds[userGuild.id]);
-
         const { sessionToken, user } = context.session;
-        const state = { sessionToken, user, guilds: displayGuilds, guild: userGuild, guildConfig };
+        const guildConfig = await SupabaseClient.getGuildConfigs(id);
+        const botGuildIds = await CacheClient.get(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`) as Record<DiscordGuild['id'], boolean>;
+        const displayGuilds = context.session.userGuilds!.filter((userGuild) => botGuildIds[userGuild.id]);
+        const featureFlags = await LaunchDarklyClient.getAllFlags({ userId: user!.id, userName: user!.username, userEmail: user!.email });
+        const state = { sessionToken, user, guilds: displayGuilds, guild: userGuild, guildConfig, featureFlags };
         context.set.headers = { 'Content-Type': 'text/html' };
         return render(
             <HtmlTemplate envVars={exposedEnvVars} state={state}>

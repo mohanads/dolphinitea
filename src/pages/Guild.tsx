@@ -11,10 +11,10 @@ import MemberActivityConfig from '../components/MemberActivityConfig';
 import { DiscordGuild } from '../clients/discord';
 
 enum Tab {
-    FEATURE_FLAGS = 'Feature Flags',
-    MEMBER_ACTIVITY = 'Member Activity',
-    STARBOARD = 'Starboard',
-    POE2 = 'PoE 2',
+    FeatureFlags = 'Feature Flags',
+    MemberActivity = 'Member Activity',
+    Starboard = 'Starboard',
+    PoE2 = 'PoE 2',
     AMP = 'AMP',
 }
 
@@ -31,13 +31,13 @@ const TabContent = (props: { guildId: string; tab: Tab | undefined, config: ISta
     switch (props.tab) {
         case Tab.AMP:
             return <AMPConfig config={props.config.amp} />;
-        case Tab.FEATURE_FLAGS:
+        case Tab.FeatureFlags:
             return <FeatureFlagsConfig guildId={props.guildId} config={props.config.featureFlags} />;
-        case Tab.POE2:
+        case Tab.PoE2:
             return <POE2Config config={props.config.poe2Registration} />;
-        case Tab.STARBOARD:
+        case Tab.Starboard:
             return <StarboardConfig config={props.config.starboard} />;
-        case Tab.MEMBER_ACTIVITY:
+        case Tab.MemberActivity:
             return <MemberActivityConfig config={props.config.memberActivity} />;
         default:
             return null as never;
@@ -50,13 +50,24 @@ interface Props {
 
 export default (props: Props) => {
     const state = useContext(State);
-    const disabled = {
-        [Tab.FEATURE_FLAGS]: !Boolean(state.guildConfig?.featureFlags),
-        [Tab.MEMBER_ACTIVITY]: !Boolean(state.guildConfig?.memberActivity),
-        [Tab.STARBOARD]: !Boolean(state.guildConfig?.starboard),
-        [Tab.POE2]: !Boolean(state.guildConfig?.poe2Registration),
-        [Tab.AMP]: !Boolean(state.guildConfig?.amp),
-    } as const satisfies Record<Tab, boolean>;
+    const hasConfig = {
+        [Tab.FeatureFlags]: Boolean(state.guildConfig?.featureFlags),
+        [Tab.MemberActivity]: Boolean(state.guildConfig?.memberActivity),
+        [Tab.Starboard]: Boolean(state.guildConfig?.starboard),
+        [Tab.PoE2]: Boolean(state.guildConfig?.poe2Registration),
+        [Tab.AMP]: Boolean(state.guildConfig?.amp),
+    };
+    const killSwitch = {
+        [Tab.FeatureFlags]: Boolean(state.featureFlags!['feature-flags-config-kill-switch']),
+        [Tab.MemberActivity]: Boolean(state.featureFlags!['member-activity-kill-switch']),
+        [Tab.Starboard]: Boolean(state.featureFlags!['starboard-config-kill-switch']),
+        [Tab.PoE2]: Boolean(state.featureFlags!['poe2-config-kill-switch']),
+        [Tab.AMP]: Boolean(state.featureFlags!['amp-config-kill-switch']),
+    };
+    const disabled = Object.values(Tab).reduce((acc, tab) => ({
+        ...acc,
+        [tab]: !hasConfig[tab] || killSwitch[tab]
+    }), {}) as Record<Tab, boolean>;
     const firstEnabledTab = Object.keys(disabled).find((tab) => !disabled[tab]) as Tab | undefined;
     const [activeTab, setActiveTab] = useState<Tab | undefined>(firstEnabledTab);
 
