@@ -90,8 +90,8 @@ export class DiscordClient {
             userId: data.user.id,
             userName: data.user.username,
         });
-        const { user: { id, global_name, username, banner, accent_color, avatar } } = data;
-        return { id, global_name, username, banner, accent_color, avatar };
+        const { user: { id, global_name, username, banner, accent_color, avatar, email } } = data;
+        return { id, global_name, username, banner, accent_color, avatar, email };
     };
 
     async getUserGuilds(accessToken: string) {
@@ -159,6 +159,7 @@ export interface DiscordUser {
         avatar?: string;
         banner?: string;
         accent_color?: number | null;
+        email?: string;
         // avatar_decoration_data?: null;
         // discriminator?: string;
         // public_flags?: number;
