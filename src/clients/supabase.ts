@@ -9,7 +9,7 @@ const editableFeatureFlags = ['create_vc', 'giveaway', 'in_voice_count', 'member
 
 export interface SupabaseGuildConfig {
     amp?: Pick<Tables['amp_configuration']['Row'], 'controller_url' | 'bot_password' | 'bot_username' | 'created_at'> | null;
-    starboard?: Pick<Tables['starboard_configuration']['Row'], 'channel_name' | 'created_at' | 'reaction' | 'required_reactions' | 'updated_at'> | null;
+    starboard?: Pick<Tables['starboard_configuration']['Row'], 'created_at' | 'reaction' | 'required_reactions' | 'updated_at'> | null;
     memberActivity?: Pick<Tables['member_activity_configuration']['Row'], 'create_vc_channel_name' | 'created_at' | 'in_voice_channel_name' | 'member_count_channel_name' | 'updated_at'> | null;
     poe2Registration?: Pick<Tables['poe2_registration_configuration']['Row'], 'allowed_maximum_reports' | 'approved_dm_message' | 'approved_dm_title' | 'channel_embed_footer' | 'channel_embed_message' | 'channel_embed_title' | 'channel_url' | 'created_at' | 'delayed_dm_message' | 'delayed_dm_title' | 'notification_channel_url' | 'utility_role_id'> | null;
     featureFlags?: Pick<Tables['feature_flag_configuration']['Row'], 'create_vc' | 'giveaway' | 'in_voice_count' | 'member_count' | 'navigate' | 'purge' | 'register_poe2' | 'reload' | 'reputation_tracking' | 'starboard' | 'status' | 'temp_message' | 'text_xp' | 'voice_xp' | 'created_at'> | null;
@@ -52,7 +52,7 @@ export class SupabaseClient {
             .select(`
                 amp:amp_configuration (controller_url, bot_password, bot_username, created_at),
                 featureFlags:feature_flag_configuration (create_vc, created_at, giveaway, in_voice_count, member_count, navigate, purge, register_poe2, reload, reputation_tracking, starboard, status, temp_message, text_xp, voice_xp),
-                starboard:starboard_configuration (channel_name, created_at, reaction, required_reactions, updated_at),
+                starboard:starboard_configuration (created_at, reaction, required_reactions, updated_at),
                 memberActivity:member_activity_configuration (create_vc_channel_name, created_at, in_voice_channel_name, member_count_channel_name, updated_at),
                 poe2Registration:poe2_registration_configuration (allowed_maximum_reports, approved_dm_message, approved_dm_title, channel_embed_footer, channel_embed_message, channel_embed_title, channel_url, created_at, delayed_dm_message, delayed_dm_title, notification_channel_url, utility_role_id)
             `)
