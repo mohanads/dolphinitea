@@ -25,6 +25,13 @@ export default (props: Props) => {
                     <script id={CLIENT_DATA_KEY} type="application/json" dangerouslySetInnerHTML={{
                         __html: JSON.stringify(props.state)
                     }}></script>
+                    <script type="text/javascript" dangerouslySetInnerHTML={{
+                        __html: `(function(c,l,a,r,i,t,y){
+                            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+                            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                            })(window, document, "clarity", "script", "${process.env.CLARITY_PROJECT_ID}");`
+                    }}></script>
                     <div id="root">{props.children}</div>
                     <script type="module" src="/public/client.js" async></script>
                 </body>
