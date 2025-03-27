@@ -32,6 +32,13 @@ export default (props: Props) => {
                             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
                             })(window, document, "clarity", "script", "${process.env.CLARITY_PROJECT_ID}");`
                     }}></script>
+                    <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID}`}></script>
+                    <script dangerouslySetInnerHTML={{
+                        __html: `window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', '${process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID}');`
+                    }}></script>
                     <div id="root">{props.children}</div>
                     <script type="module" src="/public/client.js" async></script>
                 </body>
