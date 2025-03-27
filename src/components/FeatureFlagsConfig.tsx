@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { DiscordGuild } from '../clients/discord';
 import { SupabaseGuildConfig } from '../clients/supabase';
 
@@ -58,7 +59,7 @@ const FlagConfig = (props: FlagConfigProps) => {
 export default (props: Props) => {
     const onFlagChange = async (id: keyof NonNullable<Props['config']>, value: boolean) => {
         // TODO: move api calls to an API util (move all calls)
-        await fetch(`/guilds/${props.guildId}/config`, {
+        const putConfig = () => fetch(`/guilds/${props.guildId}/config`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,8 +70,12 @@ export default (props: Props) => {
                 },
             }),
         });
-        // TODO: error handling
-        // TODO: success toast?
+
+        toast.promise(putConfig, {
+            pending: 'Syncing config...',
+            success: 'Config synced!',
+            error: 'Sync failed!',
+        });
     };
 
     const flagConfigs: FlagConfigProps[] = [
