@@ -14,20 +14,24 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+msgid "Join Quests"
+msgstr "Unirse a Misiones"
+
+#. js-lingui-explicit-id
 msgid "Unauthorized"
-msgstr ""
+msgstr "No autorizado"
 
 #. js-lingui-explicit-id
 msgid "Sorry, but your access to this page was denied."
-msgstr ""
+msgstr "Lo sentimos, pero su acceso a esta página fue denegado."
 
 #. js-lingui-explicit-id
 msgid "Back to Home"
-msgstr ""
+msgstr "Volver al inicio"
 
 #. js-lingui-explicit-id
 msgid "Contact Us"
-msgstr ""
+msgstr "Contáctenos"
 
 #. js-lingui-explicit-id
 msgid "Privacy Policy"
@@ -123,39 +127,35 @@ msgstr "Si tiene preguntas o comentarios sobre esta Política de Privacidad, com
 
 #. js-lingui-explicit-id
 msgid "Sending you to InfiniTea"
-msgstr ""
+msgstr "Enviándote a InfiniTea"
 
 #. js-lingui-explicit-id
 msgid "Login via Discord"
-msgstr ""
+msgstr "Iniciar sesión con Discord"
 
 #. js-lingui-explicit-id
 msgid "Select a Guild"
-msgstr ""
+msgstr "Seleccionar un gremio"
 
 #. js-lingui-explicit-id
 msgid "Servers you've joined will show up here. If your server isn't listed, please let us know."
-msgstr ""
+msgstr "Los servidores a los que te has unido aparecerán aquí. Si tu servidor no está en la lista, háznoslo saber."
 
 #. js-lingui-explicit-id
 msgid "Feature Flags"
-msgstr ""
+msgstr "Flags de Funciones"
 
 #. js-lingui-explicit-id
 msgid "Member Activity"
-msgstr ""
+msgstr "Actividad de los miembros"
 
 #. js-lingui-explicit-id
 msgid "Starboard"
-msgstr ""
+msgstr "Starboard"
 
 #. js-lingui-explicit-id
 msgid "AMP"
-msgstr ""
-
-#. js-lingui-explicit-id
-msgid "Registrations"
-msgstr ""
+msgstr "AMP"
 
 #. js-lingui-explicit-id
 msgid "Configure your Guild"
@@ -163,11 +163,11 @@ msgstr "Configura tu gremio"
 
 #. js-lingui-explicit-id
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #. js-lingui-explicit-id
 msgid "We tried to process your request, but couldn't due to an error."
-msgstr ""
+msgstr "Intentamos procesar su solicitud, pero no pudimos debido a un error."
 
 #. js-lingui-explicit-id
 msgid "Title"
@@ -235,88 +235,92 @@ msgstr "Términos y condiciones"
 
 #. js-lingui-explicit-id
 msgid "Syncing config..."
-msgstr ""
+msgstr "Sincronizando configuración..."
 
 #. js-lingui-explicit-id
 msgid "Config synced!"
-msgstr ""
+msgstr "¡Configuración sincronizada!"
 
 #. js-lingui-explicit-id
 msgid "Sync failed!"
-msgstr ""
+msgstr "¡Sincronización fallida!"
 
 #. js-lingui-explicit-id
 msgid "Create Voice Channel"
-msgstr ""
+msgstr "Crear canal de voz"
 
 #. js-lingui-explicit-id
 msgid "Automatically creates a new voice channel when a user joins a special one, allowing them to manage their own settings."
-msgstr ""
+msgstr "Crea automáticamente un nuevo canal de voz cuando un usuario se une a uno especial, permitiéndole administrar su propia configuración."
 
 #. js-lingui-explicit-id
 msgid "Giveaway"
-msgstr ""
+msgstr "Sorteo"
 
 #. js-lingui-explicit-id
 msgid "Lets users run giveaways using the /giveaway command, choosing where to post the giveaway (a specific channel, message, or the whole server)."
-msgstr ""
+msgstr "Permite a los usuarios realizar sorteos usando el comando /giveaway, eligiendo dónde publicar el sorteo (un canal específico, mensaje o todo el servidor)."
 
 #. js-lingui-explicit-id
 msgid "In Voice Count"
-msgstr ""
+msgstr "Conteo de usuarios en voz"
 
 #. js-lingui-explicit-id
 msgid "Creates a channel that shows the number of people currently in voice channels."
-msgstr ""
+msgstr "Crea un canal que muestra el número de personas que están actualmente en canales de voz."
 
 #. js-lingui-explicit-id
 msgid "Member Count"
-msgstr ""
+msgstr "Conteo de miembros"
 
 #. js-lingui-explicit-id
 msgid "Creates a channel that displays the total number of server members."
-msgstr ""
+msgstr "Crea un canal que muestra el número total de miembros del servidor."
 
 #. js-lingui-explicit-id
 msgid "Reputation Tracking"
-msgstr ""
+msgstr "Seguimiento de reputación"
 
 #. js-lingui-explicit-id
 msgid "Tracks community and staff reputation with leaderboards and the /give_rep command to award points."
-msgstr ""
+msgstr "Realiza un seguimiento de la reputación de la comunidad y del personal con tablas de clasificación y el comando /give_rep para otorgar puntos."
 
 #. js-lingui-explicit-id
 msgid "Highlights popular messages by reposting them when they reach a set number of reactions."
-msgstr ""
+msgstr "Destaca los mensajes populares volviéndolos a publicar cuando alcanzan un número establecido de reacciones."
 
 #. js-lingui-explicit-id
 msgid "Server Status"
-msgstr ""
+msgstr "Estado del servidor"
 
 #. js-lingui-explicit-id
 msgid "Provides live server status updates using AMP and the /status command."
-msgstr ""
+msgstr "Proporciona actualizaciones en vivo del estado del servidor usando AMP y el comando /status."
 
 #. js-lingui-explicit-id
 msgid "Temporary Message"
-msgstr ""
+msgstr "Mensaje temporal"
 
 #. js-lingui-explicit-id
 msgid "Allows users to post temporary messages that automatically disappear after a set time using /temp_message."
-msgstr ""
+msgstr "Permite a los usuarios publicar mensajes temporales que desaparecen automáticamente después de un tiempo establecido."
 
 #. js-lingui-explicit-id
 msgid "Text Leaderboard"
-msgstr ""
+msgstr "Text Rangliste"
 
 #. js-lingui-explicit-id
 msgid "Displays the top users based on text activity with the /top_rep command."
-msgstr ""
+msgstr "Zeigt die besten Benutzer basierend auf Textaktivität mit dem Befehl /top_rep an."
 
 #. js-lingui-explicit-id
 msgid "Voice Leaderboard"
-msgstr ""
+msgstr "Sprach Rangliste"
 
 #. js-lingui-explicit-id
 msgid "Shows the most active voice chat participants using the /top_rep command."
-msgstr ""
+msgstr "Zeigt die aktivsten Sprachchat-Teilnehmer mit dem Befehl /top_rep an."
+
+#. js-lingui-explicit-id
+#~ msgid "Registrations"
+#~ msgstr "Registros"

@@ -14,6 +14,10 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+msgid "Join Quests"
+msgstr ""
+
+#. js-lingui-explicit-id
 msgid "Unauthorized"
 msgstr ""
 
@@ -151,10 +155,6 @@ msgstr ""
 
 #. js-lingui-explicit-id
 msgid "AMP"
-msgstr ""
-
-#. js-lingui-explicit-id
-msgid "Registrations"
 msgstr ""
 
 #. js-lingui-explicit-id
@@ -320,6 +320,10 @@ msgstr ""
 #. js-lingui-explicit-id
 msgid "Shows the most active voice chat participants using the /top_rep command."
 msgstr ""
+
+#. js-lingui-explicit-id
+#~ msgid "Registrations"
+#~ msgstr ""
 
 #. js-lingui-explicit-id
 #~ msgid "Form Fields"

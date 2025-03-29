@@ -4,7 +4,6 @@ import { logger } from '../logger';
 
 export enum FeatureFlag {
     FeatureFlagConfigKillSwitch = 'feature-flags-config-kill-switch',
-    PoE2ConfigKillSwitch = 'poe2-config-kill-switch',
     StarboardConfigKillSwitch = 'starboard-config-kill-switch',
     MemberActivityConfigKillSwitch = 'member-activity-kill-switch',
     AMPConfigKillSwitch = 'amp-config-kill-switch',

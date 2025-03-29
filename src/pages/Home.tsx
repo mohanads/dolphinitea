@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { Icon } from '@iconify/react';
+import { i18n } from '@lingui/core';
 import Footer from '../components/Footer';
 import { Gradient } from '../gradient';
 

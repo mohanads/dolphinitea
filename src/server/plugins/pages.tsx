@@ -29,7 +29,6 @@ const schemas = {
         in_voice_count: t.Optional(t.Boolean()),
         member_count: t.Optional(t.Boolean()),
         purge: t.Optional(t.Boolean()),
-        register_poe2: t.Optional(t.Boolean()),
         reputation_tracking: t.Optional(t.Boolean()),
         starboard: t.Optional(t.Boolean()),
         status: t.Optional(t.Boolean()),

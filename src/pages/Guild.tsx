@@ -15,7 +15,7 @@ enum Tab {
     MemberActivity = 'Member Activity',
     Starboard = 'Starboard',
     AMP = 'AMP',
-    Registrations = 'Registrations',
+    JoinQuests = 'Join Quests',
 }
 
 const TabContent = (props: { guildId: string; tab: Tab, config?: IState['guildConfig'] }) => {
@@ -37,7 +37,7 @@ const TabContent = (props: { guildId: string; tab: Tab, config?: IState['guildCo
             return <StarboardConfig config={props.config.starboard} />;
         case Tab.MemberActivity:
             return <MemberActivityConfig config={props.config.memberActivity} />;
-        case Tab.Registrations:
+        case Tab.JoinQuests:
             return <RegistrationsConfig config={props.config.registration} />;
         default:
             return null as never;
@@ -72,8 +72,8 @@ export default (props: Props) => {
             disabled: !Boolean(state.guildConfig?.amp) || Boolean(state.featureFlags!['amp-config-kill-switch']),
         },
         {
-            id: Tab.Registrations,
-            name: i18n.t('Registrations'),
+            id: Tab.JoinQuests,
+            name: i18n.t('Join Quests'),
             disabled: !Boolean(state.guildConfig?.registration),
         },
     ];

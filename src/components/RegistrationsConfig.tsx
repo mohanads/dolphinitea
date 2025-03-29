@@ -16,7 +16,7 @@ interface RegistrationMessageConfigProps {
 const RegistrationMessageConfig = (props: RegistrationMessageConfigProps) => {
     return (
         <div>
-            <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
+            <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
                 <textarea
                     value={props.registration.dm_registered_title}
                     placeholder={i18n.t('Title')}
@@ -48,7 +48,7 @@ interface ApprovalMessageConfigProps {
 const ApprovalMessageConfig = (props: ApprovalMessageConfigProps) => {
     return (
         <div>
-            <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
+            <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
                 <textarea
                     value={props.registration.dm_approval_title}
                     placeholder={i18n.t('Title')}
@@ -80,7 +80,7 @@ interface DelayMessageConfigProps {
 const DelayMessageConfig = (props: DelayMessageConfigProps) => {
     return (
         <div>
-            <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
+            <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
                 <textarea
                     value={props.registration.dm_delay_title}
                     placeholder={i18n.t('Title')}
@@ -159,7 +159,7 @@ const Registration = (props: RegistrationProps) => {
                             <h2 className="text-xl font-semibold mb-2">{i18n.t('Application Fields')}</h2>
                             <p className="text-sm text-gray-400/75">{i18n.t('Define the fields the user must input when registering through this flow.')}</p>
                             {fields.length > 0 && (
-                                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
                                     {fields.map((field) => (
                                         <input
                                             value={field.field_title}
@@ -215,12 +215,12 @@ export default (props: Props) => {
                 </div>
             )}
             {!registrations.length && (
-                <div className="">{i18n.t('Create a Registration Flow to allow your server members to submit registration requests for a game or app.')}</div>
+                <div className="">{i18n.t('Join Quests allow your players to join a community or game server by completing a registration form.')}</div>
             )}
             <button
                 onClick={onAddRegistration}
                 className="mt-6 text-black transition justify-center rounded-lg bg-infinitea-orange px-3 py-1.5 font-semibold shadow hover:scale-103 active:scale-97">
-                {i18n.t('Add Registration Flow')}
+                {i18n.t('Create Join Quest')}
             </button>
         </div>
     );

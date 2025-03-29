@@ -3,7 +3,7 @@ import { i18n } from '@lingui/core';
 import App from './components/App';
 import * as Language from './language';
 
-const locale = "es";
+const locale = "en";
 
 i18n.load(locale, Language[locale]);
 i18n.activate(locale);
