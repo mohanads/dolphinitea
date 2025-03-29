@@ -22,19 +22,18 @@ const BooleanFlag = (props: BooleanFlagProps) => {
     };
 
     return (
-        <div className="block w-full bg-discord-black-70 rounded-lg shadow-xl p-6">
+        <div className="block w-full bg-discord-black-80 rounded-lg shadow-xl p-6">
             <div className="flex text-lg justify-between mb-2">
                 <div>{props.name}</div>
                 <label className="inline-flex items-center cursor-pointer relative max-w-min whitespace-nowrap">
                     <input className="sr-only peer" onChange={onChange} type="checkbox" checked={props.value} />
-                    <div className="relative w-11 h-6 bg-discord-black-90
+                    <div className="relative w-11 h-6 bg-discord-black-70
                     rounded-full peer peer-checked:after:translate-x-full
                     rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white
                     after:content-[''] after:absolute after:top-[2px] after:start-[2px]
-                    after:bg-white after:border-discord-black-90 after:border after:rounded-full
+                    after:bg-white after:border-discord-black-70 after:border after:rounded-full
                     after:h-5 after:w-5 after:transition-all
-                    peer-checked:bg-infinitea-orange"
-                    >
+                    peer-checked:bg-infinitea-orange">
                     </div>
                 </label>
             </div>
@@ -108,22 +107,6 @@ export default (props: Props) => {
             name: 'Member Count',
             description: 'Creates a channel that displays the total number of server members.',
             value: props.config?.member_count,
-            type: 'boolean',
-            onChange: onFlagChange,
-        },
-        {
-            id: 'navigate',
-            name: 'Navigate',
-            description: 'Enables the /navigate command for quickly accessing different sub-communities.',
-            value: props.config?.navigate,
-            type: 'boolean',
-            onChange: onFlagChange,
-        },
-        {
-            id: 'register_poe2',
-            name: 'PoE2 Registration',
-            description: 'Allows users to register for Path of Exile 2-related features using the /register poe2 command.',
-            value: props.config?.register_poe2,
             type: 'boolean',
             onChange: onFlagChange,
         },

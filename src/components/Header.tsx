@@ -11,7 +11,7 @@ export default () => {
     };
 
     return (
-        <header className='bg-discord-black-90 border-b-2 border-discord-black-60 shadow-xl shadow-white/3'>
+        <header className='bg-discord-black-90 border-b-2 border-discord-black-80 shadow-xl'>
             <nav className='container flex flex-wrap items-center justify-between mx-auto px-6 py-4'>
                 <a
                     href={state.user ? '/guilds' : '/'}
@@ -23,7 +23,7 @@ export default () => {
                     </span>
                 </a>
                 {state.user && (
-                    <div className='flex gap-2 ml-auto'>
+                    <div className='flex ml-auto'>
                         <button className='underline' onClick={onLogoutClick}>{i18n.t('Logout')}</button>
                     </div>
                 )}

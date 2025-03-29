@@ -85,7 +85,7 @@ export class LaunchDarklyClient {
                 userName,
             });
 
-            return null;
+            return undefined;
         }
     }
 }

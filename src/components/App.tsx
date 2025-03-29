@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import Router from 'preact-router';
 import '../index.css';
-import 'iconify-icon';
 import { State, IState, createState } from '../state';
 import * as Pages from '../pages';
 import { ToastContainer } from 'react-toastify';

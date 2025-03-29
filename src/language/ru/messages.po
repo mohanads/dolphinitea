@@ -14,37 +14,93 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: src/pages/Guild.tsx:45
 msgid "Configure your Guild"
 msgstr "Настройте свою гильдию"
 
 #. js-lingui-explicit-id
-#: src/components/Header.tsx:13
-#: src/components/Header.tsx:28
+msgid "Untitled"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Form Fields"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Define the fields the user must input when registering through this flow."
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Add fields to this registration flow to see them here."
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Field"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Add Field"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Direct Message"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Configure the direct messages sent to the user when they submit the form, become approved, or encounter a delay."
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Registration Message"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Title"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Body"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Footer"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Approval Message"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Delay Message"
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Create a Registration Flow to allow your server members to submit registration requests for a game or app."
+msgstr ""
+
+#. js-lingui-explicit-id
+msgid "Add Registration Flow"
+msgstr ""
+
+#. js-lingui-explicit-id
 msgid "Logout"
 msgstr "Выйти"
 
 #. js-lingui-explicit-id
-#: src/components/Footer.tsx:13
 msgid "Follow us"
 msgstr "Подписывайтесь на нас"
 
 #. js-lingui-explicit-id
-#: src/components/Footer.tsx:24
 msgid "Legal"
 msgstr "Правовая информация"
 
 #. js-lingui-explicit-id
-#: src/components/Footer.tsx:27
 msgid "Privacy Policy"
 msgstr "Политика конфиденциальности"
 
 #. js-lingui-explicit-id
-#: src/components/Footer.tsx:30
 msgid "Terms & Conditions"
 msgstr "Условия и положения"
 
 #. js-lingui-explicit-id
-#: src/client.tsx:4
 #~ msgid "Hello, world!"
 #~ msgstr ""

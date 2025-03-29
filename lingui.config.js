@@ -7,6 +7,11 @@ export default defineConfig({
         {
             path: '<rootDir>/src/language/{locale}/messages',
             include: ['src'],
+            exclude: ['**/database.types.ts']
         },
     ],
+    formatOptions: {
+        lineNumbers: false,
+        origins: false,
+    },
 });

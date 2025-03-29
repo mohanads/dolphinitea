@@ -17,7 +17,7 @@
         "@launchdarkly/node-server-sdk": "^9.7.6",
         "@supabase/supabase-js": "^2.49.1",
         "elysia": "^1.2.24",
-        "iconify-icon": "^2.3.0",
+        "motion": "^12.6.2",
         "pino": "^9.6.0",
         "preact": "^10.26.3",
         "preact-render-to-string": "^6.5.13",
@@ -28,6 +28,7 @@
         "redis": "^4.7.0"
     },
     "devDependencies": {
+        "@iconify/react": "^5.2.0",
         "@lingui/cli": "^5.2.0",
         "@lingui/core": "^5.2.0",
         "@tailwindcss/cli": "^4.0.9",
