@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { DiscordGuild } from '../clients/discord';
 import { SupabaseGuildConfig } from '../clients/supabase';
+import { i18n } from '@lingui/core';
 
 interface Props {
     guildId: DiscordGuild['id'];
@@ -71,89 +72,89 @@ export default (props: Props) => {
         });
 
         toast.promise(putConfig, {
-            pending: 'Syncing config...',
-            success: 'Config synced!',
-            error: 'Sync failed!',
+            pending: i18n.t('Syncing config...'),
+            success: i18n.t('Config synced!'),
+            error: i18n.t('Sync failed!'),
         });
     };
 
     const flagConfigs: FlagConfigProps[] = [
         {
             id: 'create_vc',
-            name: 'Create Voice Channel',
-            description: 'Automatically creates a new voice channel when a user joins a special one, allowing them to manage their own settings.',
+            name: i18n.t('Create Voice Channel'),
+            description: i18n.t('Automatically creates a new voice channel when a user joins a special one, allowing them to manage their own settings.'),
             value: props.config?.create_vc,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'giveaway',
-            name: 'Giveaway',
-            description: 'Lets users run giveaways using the /giveaway command, choosing where to post the giveaway (a specific channel, message, or the whole server).',
+            name: i18n.t('Giveaway'),
+            description: i18n.t('Lets users run giveaways using the /giveaway command, choosing where to post the giveaway (a specific channel, message, or the whole server).'),
             value: props.config?.giveaway,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'in_voice_count',
-            name: 'In Voice Count',
-            description: 'Creates a channel that shows the number of people currently in voice channels.',
+            name: i18n.t('In Voice Count'),
+            description: i18n.t('Creates a channel that shows the number of people currently in voice channels.'),
             value: props.config?.in_voice_count,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'member_count',
-            name: 'Member Count',
-            description: 'Creates a channel that displays the total number of server members.',
+            name: i18n.t('Member Count'),
+            description: i18n.t('Creates a channel that displays the total number of server members.'),
             value: props.config?.member_count,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'reputation_tracking',
-            name: 'Reputation Tracking',
-            description: 'Tracks community and staff reputation with leaderboards and the /give_rep command to award points.',
+            name: i18n.t('Reputation Tracking'),
+            description: i18n.t('Tracks community and staff reputation with leaderboards and the /give_rep command to award points.'),
             value: props.config?.reputation_tracking,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'starboard',
-            name: 'Starboard',
-            description: 'Highlights popular messages by reposting them when they reach a set number of reactions.',
+            name: i18n.t('Starboard'),
+            description: i18n.t('Highlights popular messages by reposting them when they reach a set number of reactions.'),
             value: props.config?.starboard,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'status',
-            name: 'Server Status',
-            description: 'Provides live server status updates using AMP and the /status command.',
+            name: i18n.t('Server Status'),
+            description: i18n.t('Provides live server status updates using AMP and the /status command.'),
             value: props.config?.status,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'temp_message',
-            name: 'Temporary Message',
-            description: 'Allows users to post temporary messages that automatically disappear after a set time using /temp_message.',
+            name: i18n.t('Temporary Message'),
+            description: i18n.t('Allows users to post temporary messages that automatically disappear after a set time using /temp_message.'),
             value: props.config?.temp_message,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'text_xp',
-            name: 'Text Leaderboard',
-            description: 'Displays the top users based on text activity with the /top_rep command.',
+            name: i18n.t('Text Leaderboard'),
+            description: i18n.t('Displays the top users based on text activity with the /top_rep command.'),
             value: props.config?.text_xp,
             type: 'boolean',
             onChange: onFlagChange,
         },
         {
             id: 'voice_xp',
-            name: 'Voice Leaderboard',
-            description: 'Shows the most active voice chat participants using the /top_rep command.',
+            name: i18n.t('Voice Leaderboard'),
+            description: i18n.t('Shows the most active voice chat participants using the /top_rep command.'),
             value: props.config?.voice_xp,
             type: 'boolean',
             onChange: onFlagChange,

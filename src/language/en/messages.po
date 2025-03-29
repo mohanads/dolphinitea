@@ -14,44 +14,160 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
+msgid "Unauthorized"
+msgstr "Unauthorized"
+
+#. js-lingui-explicit-id
+msgid "Sorry, but your access to this page was denied."
+msgstr "Sorry, but your access to this page was denied."
+
+#. js-lingui-explicit-id
+msgid "Back to Home"
+msgstr "Back to Home"
+
+#. js-lingui-explicit-id
+msgid "Contact Us"
+msgstr "Contact Us"
+
+#. js-lingui-explicit-id
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#. js-lingui-explicit-id
+msgid "1. Introduction"
+msgstr "1. Introduction"
+
+#. js-lingui-explicit-id
+msgid "Aberration Labs, Inc. (“Company”, “we”, “us”, or “our”) respects the privacy of our users (“you”). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our InfiniTea App (“App”). By using the App, you consent to the data practices described in this policy."
+msgstr "Aberration Labs, Inc. (“Company”, “we”, “us”, or “our”) respects the privacy of our users (“you”). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our InfiniTea App (“App”). By using the App, you consent to the data practices described in this policy."
+
+#. js-lingui-explicit-id
+msgid "2. Information We Collect"
+msgstr "2. Information We Collect"
+
+#. js-lingui-explicit-id
+msgid "We may collect information about you in a variety of ways. The information we may collect via the App includes: Personal Data: Personally identifiable information, such as your email address, that you voluntarily give to us when you register with the App. Derivative Data: Information our servers automatically collect when you access the App, such as your native actions that are integral to the App, as well as other interactions with the App and other users via server log files."
+msgstr "We may collect information about you in a variety of ways. The information we may collect via the App includes: Personal Data: Personally identifiable information, such as your email address, that you voluntarily give to us when you register with the App. Derivative Data: Information our servers automatically collect when you access the App, such as your native actions that are integral to the App, as well as other interactions with the App and other users via server log files."
+
+#. js-lingui-explicit-id
+msgid "3. Use of Information Collected"
+msgstr "3. Use of Information Collected"
+
+#. js-lingui-explicit-id
+msgid "We use collected information to provide, operate, and maintain our App; to improve your experience with our App through personalized features and content; to understand and analyze how you use our App and to develop new products, services, features, and functionality."
+msgstr "We use collected information to provide, operate, and maintain our App; to improve your experience with our App through personalized features and content; to understand and analyze how you use our App and to develop new products, services, features, and functionality."
+
+#. js-lingui-explicit-id
+msgid "4. Google Analytics, Smartlook & Clarity"
+msgstr "4. Google Analytics, Smartlook & Clarity"
+
+#. js-lingui-explicit-id
+msgid "Our site uses Google Analytics and Microsoft Clarity to provide you with the best experience on our website while our app uses SmartLook to help understand how our users use the App. These services collect information such as how often users visit the App, what pages they visit, and what other sites they used prior to coming to the App. We use the information we get from these services only to improve our App. These services collect the IP address assigned to you on the date you visit the App, rather than your name or other identifying information. We make every effort to anonymize when possible, and this data is never shared with any third party."
+msgstr "Our site uses Google Analytics and Microsoft Clarity to provide you with the best experience on our website while our app uses SmartLook to help understand how our users use the App. These services collect information such as how often users visit the App, what pages they visit, and what other sites they used prior to coming to the App. We use the information we get from these services only to improve our App. These services collect the IP address assigned to you on the date you visit the App, rather than your name or other identifying information. We make every effort to anonymize when possible, and this data is never shared with any third party."
+
+#. js-lingui-explicit-id
+msgid "5. Disclosure of Your Information"
+msgstr "5. Disclosure of Your Information"
+
+#. js-lingui-explicit-id
+msgid "We may share information we have collected about you in certain situations. Your information may be disclosed as follows: By Law or to Protect Rights: If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others, we may share your information as permitted or required by any applicable law, rule, or regulation. Business Transfers: In the event we undergo a business transition, such as a merger or acquisition by another company, or sale of all or a portion of our assets, your information may be among the assets transferred."
+msgstr "We may share information we have collected about you in certain situations. Your information may be disclosed as follows: By Law or to Protect Rights: If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others, we may share your information as permitted or required by any applicable law, rule, or regulation. Business Transfers: In the event we undergo a business transition, such as a merger or acquisition by another company, or sale of all or a portion of our assets, your information may be among the assets transferred."
+
+#. js-lingui-explicit-id
+msgid "6. Security of Your Information"
+msgstr "6. Security of Your Information"
+
+#. js-lingui-explicit-id
+msgid "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse."
+msgstr "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse."
+
+#. js-lingui-explicit-id
+msgid "7. Policy for Children"
+msgstr "7. Policy for Children"
+
+#. js-lingui-explicit-id
+msgid "We do not knowingly collect personal information from children under the age of 13. If we learn that we have collected personal information from a child under the age of 13 without verification of parental consent, we will delete that information as quickly as possible. If you believe that we might have any information from or about a child under 13, please contact us at [support@aberrationlabs.com]."
+msgstr "We do not knowingly collect personal information from children under the age of 13. If we learn that we have collected personal information from a child under the age of 13 without verification of parental consent, we will delete that information as quickly as possible. If you believe that we might have any information from or about a child under 13, please contact us at [support@aberrationlabs.com]."
+
+#. js-lingui-explicit-id
+msgid "8. Options Regarding Your Information"
+msgstr "8. Options Regarding Your Information"
+
+#. js-lingui-explicit-id
+msgid "Account Information: You may at any time review or change the information in your account or terminate your account by logging into your account settings and updating your account, or contacting us using the contact information provided below. Emails and Communications: If you no longer wish to receive correspondence, emails, or other communications from us, you may opt-out by noting your preferences at the time you register your account with our App, logging into your account settings and updating your preferences, or contacting us using the contact information provided below."
+msgstr "Account Information: You may at any time review or change the information in your account or terminate your account by logging into your account settings and updating your account, or contacting us using the contact information provided below. Emails and Communications: If you no longer wish to receive correspondence, emails, or other communications from us, you may opt-out by noting your preferences at the time you register your account with our App, logging into your account settings and updating your preferences, or contacting us using the contact information provided below."
+
+#. js-lingui-explicit-id
+msgid "9. Data Retention and Deletion"
+msgstr "9. Data Retention and Deletion"
+
+#. js-lingui-explicit-id
+msgid "We will retain your personal information for as long as your account is active or as needed to provide you services. You can request to delete your personal information at any time by deleting your account through the App or by emailing us at support@aberrationlabs.com."
+msgstr "We will retain your personal information for as long as your account is active or as needed to provide you services. You can request to delete your personal information at any time by deleting your account through the App or by emailing us at support@aberrationlabs.com."
+
+#. js-lingui-explicit-id
+msgid "10. Changes to This Privacy Policy"
+msgstr "10. Changes to This Privacy Policy"
+
+#. js-lingui-explicit-id
+msgid "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. We will let you know via email and/or a prominent notice on our App, prior to the change becoming effective and update the “Last updated” date at the top of this Privacy Policy."
+msgstr "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. We will let you know via email and/or a prominent notice on our App, prior to the change becoming effective and update the “Last updated” date at the top of this Privacy Policy."
+
+#. js-lingui-explicit-id
+msgid "11. Contact Us"
+msgstr "11. Contact Us"
+
+#. js-lingui-explicit-id
+msgid "If you have questions or comments about this Privacy Policy, please contact us at "
+msgstr "If you have questions or comments about this Privacy Policy, please contact us at "
+
+#. js-lingui-explicit-id
+msgid "Sending you to InfiniTea"
+msgstr "Sending you to InfiniTea"
+
+#. js-lingui-explicit-id
+msgid "Login via Discord"
+msgstr "Login via Discord"
+
+#. js-lingui-explicit-id
+msgid "Select a Guild"
+msgstr "Select a Guild"
+
+#. js-lingui-explicit-id
+msgid "Servers you've joined will show up here. If your server isn't listed, please let us know."
+msgstr "Servers you've joined will show up here. If your server isn't listed, please let us know."
+
+#. js-lingui-explicit-id
+msgid "Feature Flags"
+msgstr "Feature Flags"
+
+#. js-lingui-explicit-id
+msgid "Member Activity"
+msgstr "Member Activity"
+
+#. js-lingui-explicit-id
+msgid "Starboard"
+msgstr "Starboard"
+
+#. js-lingui-explicit-id
+msgid "AMP"
+msgstr "AMP"
+
+#. js-lingui-explicit-id
+msgid "Registrations"
+msgstr "Registrations"
+
+#. js-lingui-explicit-id
 msgid "Configure your Guild"
 msgstr "Configure your Guild"
 
 #. js-lingui-explicit-id
-msgid "Untitled"
-msgstr "Untitled"
+msgid "Error"
+msgstr "Error"
 
 #. js-lingui-explicit-id
-msgid "Form Fields"
-msgstr "Form Fields"
-
-#. js-lingui-explicit-id
-msgid "Define the fields the user must input when registering through this flow."
-msgstr "Define the fields the user must input when registering through this flow."
-
-#. js-lingui-explicit-id
-msgid "Add fields to this registration flow to see them here."
-msgstr "Add fields to this registration flow to see them here."
-
-#. js-lingui-explicit-id
-msgid "Field"
-msgstr "Field"
-
-#. js-lingui-explicit-id
-msgid "Add Field"
-msgstr "Add Field"
-
-#. js-lingui-explicit-id
-msgid "Direct Message"
-msgstr "Direct Message"
-
-#. js-lingui-explicit-id
-msgid "Configure the direct messages sent to the user when they submit the form, become approved, or encounter a delay."
-msgstr "Configure the direct messages sent to the user when they submit the form, become approved, or encounter a delay."
-
-#. js-lingui-explicit-id
-msgid "Registration Message"
-msgstr "Registration Message"
+msgid "We tried to process your request, but couldn't due to an error."
+msgstr "We tried to process your request, but couldn't due to an error."
 
 #. js-lingui-explicit-id
 msgid "Title"
@@ -66,12 +182,32 @@ msgid "Footer"
 msgstr "Footer"
 
 #. js-lingui-explicit-id
-msgid "Approval Message"
-msgstr "Approval Message"
+msgid "Untitled"
+msgstr "Untitled"
 
 #. js-lingui-explicit-id
-msgid "Delay Message"
-msgstr "Delay Message"
+msgid "Application Fields"
+msgstr "Application Fields"
+
+#. js-lingui-explicit-id
+msgid "Define the fields the user must input when registering through this flow."
+msgstr "Define the fields the user must input when registering through this flow."
+
+#. js-lingui-explicit-id
+msgid "Field"
+msgstr "Field"
+
+#. js-lingui-explicit-id
+msgid "Add Field"
+msgstr "Add Field"
+
+#. js-lingui-explicit-id
+msgid "Status Update Messages"
+msgstr "Status Update Messages"
+
+#. js-lingui-explicit-id
+msgid "When a registration application is submitted or has its status updated, its respective message will be sent to the registrant."
+msgstr "When a registration application is submitted or has its status updated, its respective message will be sent to the registrant."
 
 #. js-lingui-explicit-id
 msgid "Create a Registration Flow to allow your server members to submit registration requests for a game or app."
@@ -94,12 +230,124 @@ msgid "Legal"
 msgstr "Legal"
 
 #. js-lingui-explicit-id
-msgid "Privacy Policy"
-msgstr "Privacy Policy"
-
-#. js-lingui-explicit-id
 msgid "Terms & Conditions"
 msgstr "Terms & Conditions"
+
+#. js-lingui-explicit-id
+msgid "Syncing config..."
+msgstr "Syncing config..."
+
+#. js-lingui-explicit-id
+msgid "Config synced!"
+msgstr "Config synced!"
+
+#. js-lingui-explicit-id
+msgid "Sync failed!"
+msgstr "Sync failed!"
+
+#. js-lingui-explicit-id
+msgid "Create Voice Channel"
+msgstr "Create Voice Channel"
+
+#. js-lingui-explicit-id
+msgid "Automatically creates a new voice channel when a user joins a special one, allowing them to manage their own settings."
+msgstr "Automatically creates a new voice channel when a user joins a special one, allowing them to manage their own settings."
+
+#. js-lingui-explicit-id
+msgid "Giveaway"
+msgstr "Giveaway"
+
+#. js-lingui-explicit-id
+msgid "Lets users run giveaways using the /giveaway command, choosing where to post the giveaway (a specific channel, message, or the whole server)."
+msgstr "Lets users run giveaways using the /giveaway command, choosing where to post the giveaway (a specific channel, message, or the whole server)."
+
+#. js-lingui-explicit-id
+msgid "In Voice Count"
+msgstr "In Voice Count"
+
+#. js-lingui-explicit-id
+msgid "Creates a channel that shows the number of people currently in voice channels."
+msgstr "Creates a channel that shows the number of people currently in voice channels."
+
+#. js-lingui-explicit-id
+msgid "Member Count"
+msgstr "Member Count"
+
+#. js-lingui-explicit-id
+msgid "Creates a channel that displays the total number of server members."
+msgstr "Creates a channel that displays the total number of server members."
+
+#. js-lingui-explicit-id
+msgid "Reputation Tracking"
+msgstr "Reputation Tracking"
+
+#. js-lingui-explicit-id
+msgid "Tracks community and staff reputation with leaderboards and the /give_rep command to award points."
+msgstr "Tracks community and staff reputation with leaderboards and the /give_rep command to award points."
+
+#. js-lingui-explicit-id
+msgid "Highlights popular messages by reposting them when they reach a set number of reactions."
+msgstr "Highlights popular messages by reposting them when they reach a set number of reactions."
+
+#. js-lingui-explicit-id
+msgid "Server Status"
+msgstr "Server Status"
+
+#. js-lingui-explicit-id
+msgid "Provides live server status updates using AMP and the /status command."
+msgstr "Provides live server status updates using AMP and the /status command."
+
+#. js-lingui-explicit-id
+msgid "Temporary Message"
+msgstr "Temporary Message"
+
+#. js-lingui-explicit-id
+msgid "Allows users to post temporary messages that automatically disappear after a set time using /temp_message."
+msgstr "Allows users to post temporary messages that automatically disappear after a set time using /temp_message."
+
+#. js-lingui-explicit-id
+msgid "Text Leaderboard"
+msgstr "Text Leaderboard"
+
+#. js-lingui-explicit-id
+msgid "Displays the top users based on text activity with the /top_rep command."
+msgstr "Displays the top users based on text activity with the /top_rep command."
+
+#. js-lingui-explicit-id
+msgid "Voice Leaderboard"
+msgstr "Voice Leaderboard"
+
+#. js-lingui-explicit-id
+msgid "Shows the most active voice chat participants using the /top_rep command."
+msgstr "Shows the most active voice chat participants using the /top_rep command."
+
+#. js-lingui-explicit-id
+#~ msgid "Form Fields"
+#~ msgstr "Form Fields"
+
+#. js-lingui-explicit-id
+#~ msgid "Add fields to this registration flow to see them here."
+#~ msgstr "Add fields to this registration flow to see them here."
+
+#. js-lingui-explicit-id
+#~ msgid "Direct Message"
+#~ msgstr "Direct Message"
+
+#. js-lingui-explicit-id
+#~ msgid "Configure the direct messages sent to the user when they submit the form, become approved, or encounter a delay."
+#~ msgstr "Configure the direct messages sent to the user when they submit the form, become approved, or encounter a delay."
+
+#. js-lingui-explicit-id
+#~ msgid "Registration Message"
+#~ msgstr "Registration Message"
+
+#. js-lingui-explicit-id
+#~ msgid "Approval Message"
+#~ msgstr "Approval Message"
+
+#. js-lingui-explicit-id
+#~ msgid "Delay Message"
+#~ msgstr "Delay Message"
 
 #. js-lingui-explicit-id
 #~ msgid "Hello, world!"

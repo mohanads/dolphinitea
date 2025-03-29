@@ -44,7 +44,7 @@ export default () => {
                                 className="flex transition w-full justify-center rounded-lg bg-discord-blue px-3 py-1.5 font-semibold shadow hover:scale-103 active:scale-97"
                             >
                                 <Icon icon="simple-icons:discord" width="24" height="24" />
-                                <div className="ml-2">Login via Discord</div>
+                                <div className="ml-2">{i18n.t('Login via Discord')}</div>
                             </button>
                         </div>
                     </div>

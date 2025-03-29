@@ -50,25 +50,35 @@ interface Props {
 
 export default (props: Props) => {
     const state = useContext(State);
-    const hasConfig = {
-        [Tab.FeatureFlags]: Boolean(state.guildConfig?.featureFlags),
-        [Tab.MemberActivity]: Boolean(state.guildConfig?.memberActivity),
-        [Tab.Starboard]: Boolean(state.guildConfig?.starboard),
-        [Tab.AMP]: Boolean(state.guildConfig?.amp),
-        [Tab.Registrations]: true,
-    };
-    const killSwitch = {
-        [Tab.FeatureFlags]: Boolean(state.featureFlags!['feature-flags-config-kill-switch']),
-        [Tab.MemberActivity]: Boolean(state.featureFlags!['member-activity-kill-switch']),
-        [Tab.Starboard]: Boolean(state.featureFlags!['starboard-config-kill-switch']),
-        [Tab.AMP]: Boolean(state.featureFlags!['amp-config-kill-switch']),
-    };
-    const disabled = Object.values(Tab).reduce((acc, tab) => ({
-        ...acc,
-        [tab]: !hasConfig[tab] || killSwitch[tab]
-    }), {}) as Record<Tab, boolean>;
-    const firstEnabledTab = Object.keys(disabled).find((tab) => !disabled[tab]) as Tab | undefined;
-    const [activeTab, setActiveTab] = useState<Tab | undefined>(firstEnabledTab);
+    const tabs: { id: Tab, name: string, disabled: boolean }[] = [
+        {
+            id: Tab.FeatureFlags,
+            name: i18n.t('Feature Flags'),
+            disabled: !Boolean(state.guildConfig?.featureFlags) || Boolean(state.featureFlags!['feature-flags-config-kill-switch']),
+        },
+        {
+            id: Tab.MemberActivity,
+            name: i18n.t('Member Activity'),
+            disabled: !Boolean(state.guildConfig?.memberActivity) || Boolean(state.featureFlags!['member-activity-kill-switch']),
+        },
+        {
+            id: Tab.Starboard,
+            name: i18n.t('Starboard'),
+            disabled: !Boolean(state.guildConfig?.starboard) || Boolean(state.featureFlags!['starboard-config-kill-switch']),
+        },
+        {
+            id: Tab.AMP,
+            name: i18n.t('AMP'),
+            disabled: !Boolean(state.guildConfig?.amp) || Boolean(state.featureFlags!['amp-config-kill-switch']),
+        },
+        {
+            id: Tab.Registrations,
+            name: i18n.t('Registrations'),
+            disabled: !Boolean(state.guildConfig?.registration),
+        },
+    ];
+    const firstEnabledTab = tabs.find((tab) => !tab.disabled);
+    const [activeTab, setActiveTab] = useState<Tab | undefined>(firstEnabledTab?.id);
 
     const activateTab = (tab: Tab) => {
         setActiveTab(tab);
@@ -79,16 +89,16 @@ export default (props: Props) => {
             <nav className="bg-discord-black-90 z-1 border-b-2 border-discord-black-80 text-sm font-medium text-center shadow-xl">
                 <div className="container px-6 mx-auto flex-grow flex flex-col overflow-auto no-scrollbar">
                     <ul className="flex gap-6">
-                        {Object.values(Tab).map((tab) => (
+                        {tabs.map((tab) => (
                             <li>
                                 <button
-                                    disabled={disabled[tab]}
-                                    onClick={() => !disabled[tab] && activateTab(tab)}
+                                    disabled={tab.disabled}
+                                    onClick={() => !tab.disabled && activateTab(tab.id)}
                                     type="button"
                                     className={`
                                         whitespace-nowrap py-4 transition border-b-2 disabled:text-gray-400
                                         disabled:cursor-not-allowed disabled:border-transparent
-                                        ${tab !== activeTab ? 'border-transparent hover:border-discord-black-60' : 'text-infinitea-orange! active border-infinitea-orange'}`}
+                                        ${tab.id !== activeTab ? 'border-transparent hover:border-discord-black-60' : 'text-infinitea-orange! active border-infinitea-orange'}`}
                                 >
                                     {i18n.t(tab)}
                                 </button>
