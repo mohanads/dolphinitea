@@ -35,18 +35,13 @@ export default () => new Elysia()
             let displayGuilds: DiscordGuild[] = [];
             let getBotGuilds = DiscordClient.getBotGuilds();
             let getBotGuildIds = CacheClient.get<Record<DiscordGuild['id'], boolean>>(`BOT_GUILD_IDS:${process.env.DISCORD_CLIENT_ID}`);
-            let getUserGuilds;
-
-            if (context.session.discordAccessToken) {
-                getUserGuilds = DiscordClient.getUserGuilds(context.session.discordAccessToken);
-            }
 
             /**
              * Get the user Guilds.
              */
             if (context.session.discordAccessToken) {
                 logger.info('Session has Discord access token. Attempting to fetch fresh user Guilds');
-                userGuilds = await getUserGuilds;
+                userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken);
 
                 if (userGuilds) {
                     logger.info('Fetched fresh user Guilds');
