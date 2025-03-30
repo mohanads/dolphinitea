@@ -15,22 +15,31 @@ Object.keys(Locale).forEach((locale) => {
     i18n.load(locale, Language[locale]);
 })
 
-export default () => new Elysia().use((app) => app.derive({ as: 'local' }, (context) => {
-    if (!context.headers['accept-language']) {
-        logger.info('No accept-language header. Activating default locale', { locale: Locale.en });
-        i18n.activate("en");
-        return;
-    }
+export default () => new Elysia({ name: 'locale-plugin' })
+    .use((app) => app.derive({ as: 'scoped' }, async (context) => {
+        logger.info('Parsing locale');
+        const logMetadata: Record<string, unknown> = {};
 
-    logger.info("Accept-language header provided. Attempting to use", { acceptLanguage: context.headers['accept-language'] });
-    const locale = context.headers['accept-language'].substring(0, 2);
+        if (!context.headers['accept-language']) {
+            const locale = Locale.en;
+            logMetadata.locale = locale;
+            logger.info(logMetadata, 'No accept-language header. Activating default locale', logMetadata);
+            i18n.activate(locale);
+            return { locale };
+        }
 
-    if (!(locale in Locale && locale in Language)) {
-        logger.info("Accept-language unsupported. Using fallback/default", { locale });
-        i18n.activate("en");
-        return;
-    }
+        logMetadata.acceptLanguage = context.headers['accept-language'];
+        logger.info("Accept-language header provided. Attempting to use", logMetadata);
+        const locale = context.headers['accept-language'].substring(0, 2);
+        logMetadata.locale = locale;
 
-    logger.info("Supported accept-language provided. Activating it", { locale });
-    i18n.activate(locale);
-}));
+        if (!(locale in Locale && locale in Language)) {
+            logger.info(logMetadata, "Accept-language unsupported. Using fallback/default", logMetadata);
+            i18n.activate(Locale.en);
+            return { locale };
+        }
+
+        logger.info("Supported accept-language provided. Activating it", logMetadata);
+        i18n.activate(locale);
+        return { locale };
+    }));

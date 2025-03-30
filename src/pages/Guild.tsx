@@ -112,14 +112,14 @@ export default (props: Props) => {
                     <div className="flex justify-between items-center gap-6">
                         <div className='flex gap-6'>
                             {/* TODO: display missing img placeholder */}
-                            {state.guild!.icon && (
+                            {state.guild.icon && (
                                 <img className='size-20 rounded'
-                                    src={`https://cdn.discordapp.com/icons/${state.guild!.id}/${state.guild!.icon}.png`}
+                                    src={`https://cdn.discordapp.com/icons/${state.guild.id}/${state.guild.icon}.png`}
                                 />
                             )}
                             <div className='flex flex-col'>
                                 <h1 className="text-2xl font-semibold mb-2">{i18n.t('Configure your Guild')}</h1>
-                                <h2 className="text-lg text-gray-400/75">{state.guild!.name}</h2>
+                                <h2 className="text-lg text-gray-400/75">{state.guild.name}</h2>
                             </div>
                         </div>
                     </div>

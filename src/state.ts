@@ -11,18 +11,27 @@ export interface ISession {
     discordRefreshToken?: string;
     user?: DiscordUser['user'];
     userGuilds?: DiscordGuild[];
+    displayGuilds?: DiscordGuild[];
 }
 
-export interface IState {
+export type IState = {
     sessionToken: string;
-    user?: DiscordUser['user'];
-    guilds?: DiscordGuild[];
-    guildConfig?: SupabaseGuildConfig;
-    featureFlags?: Record<FeatureFlag, unknown>;
-    guild?: DiscordGuild;
+    featureFlags: Record<FeatureFlag, unknown>;
     error?: string;
     unauthorized?: boolean;
-}
+} & ({
+    user?: DiscordUser['user'];
+    displayGuilds?: DiscordGuild[];
+} | {
+    user: DiscordUser['user'];
+    displayGuilds: DiscordGuild[];
+}) & ({
+    guildConfig?: SupabaseGuildConfig;
+    guild?: DiscordGuild;
+} | {
+    guildConfig: SupabaseGuildConfig;
+    guild: DiscordGuild;
+})
 
 const getClientData = () => {
     if (typeof window === 'undefined') return undefined;

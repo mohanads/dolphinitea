@@ -87,7 +87,7 @@ export class SupabaseClient {
         return data?.id;
     }
 
-    async updateFeatureFlags(guildId: string, featureFlags: Partial<NonNullable<SupabaseGuildConfig['featureFlags']>>) {
+    async putFeatureFlags(guildId: string, featureFlags: Partial<NonNullable<SupabaseGuildConfig['featureFlags']>>) {
         if (!guildId) {
             logger.error('Supabase Guild ID missing for updating Feature Flags', {
                 guildId,
@@ -125,6 +125,75 @@ export class SupabaseClient {
             });
             throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
         }
+    }
+
+    async putRegistration(guildId: string, gameName: string, registration: NonNullable<SupabaseGuildConfig['registration']>[0]) {
+        const logMetadata: Record<string, unknown> = {
+            guildId,
+            gameName,
+        };
+
+        if (!guildId) {
+            logger.error('Supabase Guild ID missing for updating Registration', logMetadata);
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_GUILD_ID_MISSING);
+        }
+
+        if (!gameName) {
+            logger.error('Supabase Game Name missing for updating Registration', logMetadata);
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_REGISTRATION_GAME_NAME_MISSING);
+        }
+
+        // TODO: proper validation with a defined schema
+        if (!registration) {
+            logger.error('Invalid Registration object to update', logMetadata);
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_INVALID_REGISTRATION);
+        }
+
+        const registrationConfig = await this.supabase
+            .from('registration_config')
+            .select('guildId')
+            .eq('guild_id', guildId as any)
+            .eq('game_name', gameName)
+            .maybeSingle();
+
+        if (registrationConfig.error) {
+            logMetadata.errorMessage = registrationConfig.error?.message || registrationConfig.error;
+            logger.warn('Failed to fetch Registration Config', logMetadata);
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
+        }
+
+        const upsertedRegistrationConfig = await this.supabase.rpc('put_registration_config', {
+            guild_id: guildId as any,
+            game_name: gameName,
+            dm_approval_title: registration.dm_approval_title,
+            dm_approval_body: registration.dm_approval_body,
+            dm_approval_footer: registration.dm_approval_footer as any,
+            dm_delay_title: registration.dm_delay_title,
+            dm_delay_body: registration.dm_delay_body,
+            dm_delay_footer: registration.dm_approval_footer as any,
+            dm_registered_title: registration.dm_registered_title,
+            dm_registered_body: registration.dm_registered_body,
+            dm_registered_footer: registration.dm_registered_footer as any,
+            registration_embed_title: registration.registration_embed_title,
+            registration_embed_body: registration.registration_embed_body,
+            registration_embed_footer: registration.registration_embed_footer,
+            log_channel_url: registration.log_channel_url as any,
+            registration_channel_url: registration.registration_channel_url as any,
+            fields: registration.fields.map((field) => ({
+                field_title: field.field_title,
+                guild_id: guildId,
+                game_name: gameName,
+            })),
+        });
+
+        if (upsertedRegistrationConfig.error) {
+            logMetadata.errorMessage = upsertedRegistrationConfig.error?.message || upsertedRegistrationConfig.error;
+            logger.warn('Failed to put Registration Config', logMetadata);
+            throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
+        }
+
+        logger.info('Successfully put Registration Config', logMetadata);
+        return;
     }
 }
 

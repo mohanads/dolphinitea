@@ -122,7 +122,7 @@ const Registration = (props: RegistrationProps) => {
             name: 'Delayed',
             render: <DelayMessageConfig registration={props.registration} />
         },
-    ]
+    ];
 
     const toggle = () => {
         setOpen((open) => !open);
@@ -171,7 +171,7 @@ const Registration = (props: RegistrationProps) => {
                             )}
                             <button
                                 onClick={onAddFieldClick}
-                                className="mt-6 justify-center rounded-lg text-black bg-infinitea-orange px-3 py-1.5 font-semibold shadow"
+                                className="mt-6 justify-center rounded-lg text-black bg-infinitea-orange px-3 py-1.5 font-semibold shadow transition hover:scale-103 active:scale-97"
                             >
                                 {i18n.t('Add Field')}
                             </button>
@@ -219,7 +219,7 @@ export default (props: Props) => {
             )}
             <button
                 onClick={onAddRegistration}
-                className="mt-6 text-black transition justify-center rounded-lg bg-infinitea-orange px-3 py-1.5 font-semibold shadow hover:scale-103 active:scale-97">
+                className="mt-6 text-black justify-center rounded-lg bg-infinitea-orange px-3 py-1.5 font-semibold shadow transition hover:scale-103 active:scale-97">
                 {i18n.t('Create Join Quest')}
             </button>
         </div>
