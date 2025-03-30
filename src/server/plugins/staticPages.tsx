@@ -4,7 +4,7 @@ import render from '../render';
 import { ISession } from '../../state';
 import { FeatureFlag } from '../../clients/launchDarkly';
 
-export default () => new Elysia({ name: 'static-pages-plugin' })
+export default () => new Elysia()
     .get('/', (context: Context & { session: ISession; featureFlags: Record<FeatureFlag, unknown>; }) => {
         context.set.headers = { 'Content-Type': 'text/html' };
         return render({ ...context.session, featureFlags: context.featureFlags }, context.request.url);
