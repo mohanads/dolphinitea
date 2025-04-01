@@ -56,7 +56,7 @@ export class SupabaseClient {
                 memberActivity:member_activity_configuration (create_vc_channel_name, created_at, in_voice_channel_name, member_count_channel_name, updated_at),
                 registration:registration_config (dm_approval_body, dm_approval_footer, dm_approval_title, dm_delay_body, dm_delay_footer, dm_delay_title, dm_registered_body, dm_registered_footer, dm_registered_title, game_name, guild_id, log_channel_url, registration_channel_url, registration_embed_body, registration_embed_footer, registration_embed_title, fields:registration_field(field_title))
             `)
-            .eq('guild_id', guildId as any)
+            .eq('guild_id', Number(guildId))
             .maybeSingle();
 
         if (error) {
@@ -73,7 +73,7 @@ export class SupabaseClient {
         const { data, error } = await this.supabase
             .from('configuration')
             .select(`id`)
-            .eq('guild_id', guildId as any)
+            .eq('guild_id', Number(guildId))
             .maybeSingle();
 
         if (error) {
@@ -127,10 +127,10 @@ export class SupabaseClient {
         }
     }
 
-    async putRegistration(guildId: string, gameName: string, registration: NonNullable<SupabaseGuildConfig['registration']>[0]) {
+    async putRegistration(guildId: string, registration: NonNullable<SupabaseGuildConfig['registration']>[0]) {
         const logMetadata: Record<string, unknown> = {
             guildId,
-            gameName,
+            gameName: registration.game_name,
         };
 
         if (!guildId) {
@@ -138,7 +138,7 @@ export class SupabaseClient {
             throw new Errors.LoadedError(Errors.Code.SUPABASE_GUILD_ID_MISSING);
         }
 
-        if (!gameName) {
+        if (!registration.game_name) {
             logger.error('Supabase Game Name missing for updating Registration', logMetadata);
             throw new Errors.LoadedError(Errors.Code.SUPABASE_REGISTRATION_GAME_NAME_MISSING);
         }
@@ -149,22 +149,9 @@ export class SupabaseClient {
             throw new Errors.LoadedError(Errors.Code.SUPABASE_INVALID_REGISTRATION);
         }
 
-        const registrationConfig = await this.supabase
-            .from('registration_config')
-            .select('guildId')
-            .eq('guild_id', guildId as any)
-            .eq('game_name', gameName)
-            .maybeSingle();
-
-        if (registrationConfig.error) {
-            logMetadata.errorMessage = registrationConfig.error?.message || registrationConfig.error;
-            logger.warn('Failed to fetch Registration Config', logMetadata);
-            throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
-        }
-
-        const upsertedRegistrationConfig = await this.supabase.rpc('put_registration_config', {
-            guild_id: guildId as any,
-            game_name: gameName,
+        const insert = {
+            guild_id: Number(guildId),
+            game_name: registration.game_name,
             dm_approval_title: registration.dm_approval_title,
             dm_approval_body: registration.dm_approval_body,
             dm_approval_footer: registration.dm_approval_footer as any,
@@ -179,16 +166,18 @@ export class SupabaseClient {
             registration_embed_footer: registration.registration_embed_footer,
             log_channel_url: registration.log_channel_url as any,
             registration_channel_url: registration.registration_channel_url as any,
-            fields: registration.fields.map((field) => ({
+            fields: registration.fields?.map((field) => ({
                 field_title: field.field_title,
-                guild_id: guildId,
-                game_name: gameName,
+                guild_id: Number(guildId),
+                game_name: registration.game_name,
             })),
-        });
+        };
+
+        const upsertedRegistrationConfig = await this.supabase.rpc('put_registration_config', insert);
 
         if (upsertedRegistrationConfig.error) {
             logMetadata.errorMessage = upsertedRegistrationConfig.error?.message || upsertedRegistrationConfig.error;
-            logger.warn('Failed to put Registration Config', logMetadata);
+            logger.error(logMetadata, 'Failed to put Registration Config');
             throw new Errors.LoadedError(Errors.Code.SUPABASE_UNKNOWN_ERROR);
         }
 

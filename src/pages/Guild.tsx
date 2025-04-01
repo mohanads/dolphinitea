@@ -38,7 +38,7 @@ const TabContent = (props: { guildId: string; tab: Tab, config?: IState['guildCo
         case Tab.MemberActivity:
             return <MemberActivityConfig config={props.config.memberActivity} />;
         case Tab.JoinQuests:
-            return <RegistrationsConfig config={props.config.registration} />;
+            return <RegistrationsConfig guildId={props.guildId} config={props.config.registration} />;
         default:
             return null as never;
     }

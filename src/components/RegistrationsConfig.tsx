@@ -2,8 +2,11 @@ import { useState } from 'preact/hooks';
 import { AnimatePresence, motion } from 'motion/react';
 import { i18n } from '@lingui/core';
 import { Icon } from '@iconify/react';
+import { toast } from 'react-toastify';
 import { SupabaseGuildConfig } from '../clients/supabase';
 import Tabs from './Tabs';
+import { DiscordGuild } from '../clients/discord';
+import { putRegistration } from '../clients/api';
 
 interface RegistrationMessageConfigProps {
     registration: {
@@ -11,24 +14,32 @@ interface RegistrationMessageConfigProps {
         dm_registered_body: string;
         dm_registered_footer?: string | null;
     } & Record<string, unknown>;
+    onChange: (field: string, value: string) => void;
 }
 
 const RegistrationMessageConfig = (props: RegistrationMessageConfigProps) => {
+    const onFieldChange = (field: string) => (event) => {
+        props.onChange(field, event.currentTarget.value);
+    };
+
     return (
         <div>
             <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
                 <textarea
                     value={props.registration.dm_registered_title}
+                    onChange={onFieldChange('dm_registered_title')}
                     placeholder={i18n.t('Title')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
                 <textarea
                     value={props.registration.dm_registered_body}
+                    onChange={onFieldChange('dm_registered_body')}
                     placeholder={i18n.t('Body')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
                 <textarea
                     value={props.registration.dm_registered_footer || ''}
+                    onChange={onFieldChange('dm_registered_footer')}
                     placeholder={i18n.t('Footer')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
@@ -43,24 +54,32 @@ interface ApprovalMessageConfigProps {
         dm_approval_body: string;
         dm_approval_footer?: string | null;
     } & Record<string, unknown>;
+    onChange: (field: string, value: string) => void;
 }
 
 const ApprovalMessageConfig = (props: ApprovalMessageConfigProps) => {
+    const onFieldChange = (field: string) => (event) => {
+        props.onChange(field, event.currentTarget.value);
+    };
+
     return (
         <div>
             <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
                 <textarea
                     value={props.registration.dm_approval_title}
+                    onChange={onFieldChange('dm_approval_title')}
                     placeholder={i18n.t('Title')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
                 <textarea
                     value={props.registration.dm_approval_body}
+                    onChange={onFieldChange('dm_approval_body')}
                     placeholder={i18n.t('Body')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
                 <textarea
                     value={props.registration.dm_approval_footer || ''}
+                    onChange={onFieldChange('dm_approval_footer')}
                     placeholder={i18n.t('Footer')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
@@ -75,24 +94,32 @@ interface DelayMessageConfigProps {
         dm_delay_body: string;
         dm_delay_footer?: string | null;
     } & Record<string, unknown>;
+    onChange: (field: string, value: string) => void;
 }
 
 const DelayMessageConfig = (props: DelayMessageConfigProps) => {
+    const onFieldChange = (field: string) => (event) => {
+        props.onChange(field, event.currentTarget.value);
+    };
+
     return (
         <div>
             <div className="grid gap-3 grid-cols-1 lg:grid-cols-3">
                 <textarea
                     value={props.registration.dm_delay_title}
+                    onChange={onFieldChange('dm_delay_title')}
                     placeholder={i18n.t('Title')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
                 <textarea
                     value={props.registration.dm_delay_body}
+                    onChange={onFieldChange('dm_delay_body')}
                     placeholder={i18n.t('Body')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
                 <textarea
                     value={props.registration.dm_delay_footer || ''}
+                    onChange={onFieldChange('dm_delay_footer')}
                     placeholder={i18n.t('Footer')}
                     className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                 />
@@ -102,25 +129,37 @@ const DelayMessageConfig = (props: DelayMessageConfigProps) => {
 };
 
 interface RegistrationProps {
+    guildId: DiscordGuild['id'];
     registration: NonNullable<SupabaseGuildConfig['registration']>[number];
 }
 
 const Registration = (props: RegistrationProps) => {
-    const [fields, setFields] = useState(props.registration.fields);
+    const [data, setData] = useState(props.registration);
+    const [fields, setFields] = useState(props.registration.fields.reduce((acc, field) => {
+        const id = self.crypto.randomUUID();
+        return { ...acc, [id]: { ...field, id } };
+    }, {} as Record<string, RegistrationProps['registration']['fields'][number] & { id: string; }>));
     const [open, setOpen] = useState(true);
+
+    const onRootFieldChange = (field: string, value: unknown) => {
+        setData((data) => ({
+            ...data,
+            [field]: value,
+        }));
+    };
 
     const directMessageTabs = [
         {
             name: 'Sent',
-            render: <RegistrationMessageConfig registration={props.registration} />
+            render: <RegistrationMessageConfig registration={data} onChange={onRootFieldChange} />
         },
         {
             name: 'Approved',
-            render: <ApprovalMessageConfig registration={props.registration} />
+            render: <ApprovalMessageConfig registration={data} onChange={onRootFieldChange} />
         },
         {
             name: 'Delayed',
-            render: <DelayMessageConfig registration={props.registration} />
+            render: <DelayMessageConfig registration={data} onChange={onRootFieldChange} />
         },
     ];
 
@@ -129,23 +168,64 @@ const Registration = (props: RegistrationProps) => {
     };
 
     const onAddFieldClick = () => {
-        setFields((fields) => [
+        setFields((fields) => {
+            const id = self.crypto.randomUUID();
+            return {
+                ...fields,
+                [id]: { id, field_title: '' },
+            };
+        });
+    };
+
+    const onSaveClick = async () => {
+        const payload = {
+            ...data,
+            fields: Object.values(fields).map((field) => ({ field_title: field.field_title })),
+        };
+
+        toast.promise(putRegistration(props.guildId, payload), {
+            pending: i18n.t('Syncing config...'),
+            success: i18n.t('Config synced!'),
+            error: i18n.t('Sync failed!'),
+        });
+    };
+
+    const onGameNameChange = (event) => setData((data) => ({
+        ...data,
+        game_name: event.currentTarget.value,
+    }));
+
+    const onFieldChange = (fieldId: string) => (event) => {
+        if (!(fieldId in fields)) return;
+        setFields((fields) => ({
             ...fields,
-            {} as any,
-        ]);
+            [fieldId]: {
+                ...fields[fieldId],
+                field_title: event.currentTarget.value,
+            },
+        }));
     };
 
     return (
         <section className="bg-discord-black-80 rounded-lg shadow-xl py-6">
-            <div className="text-xl w-full flex px-6">
+            <div className="w-full flex px-6">
                 <input
-                    value={props.registration.game_name}
+                    value={data.game_name}
+                    onChange={onGameNameChange}
                     placeholder={i18n.t('Untitled')}
                     className="bg-discord-black-70 text-sm rounded-lg block p-2.5"
                 />
-                <button onClick={toggle} className="ml-4 w-full cursor-pointer">
-                    <Icon className="ml-auto text-infinitea-orange" icon={open ? "solar:eye-bold" : "solar:eye-closed-bold"} width="24" height="24" />
-                </button>
+                <div className="ml-4 w-full flex gap-4 items-center">
+                    <button onClick={toggle} className="ml-auto cursor-pointer">
+                        <Icon className="text-infinitea-orange" icon={open ? "solar:eye-bold" : "solar:eye-closed-bold"} width="24" height="24" />
+                    </button>
+                    <button
+                        onClick={onSaveClick}
+                        className="justify-center rounded-lg text-black bg-infinitea-orange px-3 py-1.5 font-semibold shadow transition hover:scale-103 active:scale-97"
+                    >
+                        Save
+                    </button>
+                </div>
             </div>
             <AnimatePresence>
                 {open && (
@@ -158,11 +238,12 @@ const Registration = (props: RegistrationProps) => {
                         <div className="px-6">
                             <h2 className="text-xl font-semibold mb-2">{i18n.t('Application Fields')}</h2>
                             <p className="text-sm text-gray-400/75">{i18n.t('Define the fields the user must input when registering through this flow.')}</p>
-                            {fields.length > 0 && (
+                            {Object.keys(fields).length > 0 && (
                                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
-                                    {fields.map((field) => (
+                                    {Object.values(fields).map((field) => (
                                         <input
                                             value={field.field_title}
+                                            onChange={onFieldChange(field.id)}
                                             placeholder={i18n.t('Field')}
                                             className="bg-discord-black-70 text-sm rounded-lg block w-full p-2.5"
                                         />
@@ -171,7 +252,7 @@ const Registration = (props: RegistrationProps) => {
                             )}
                             <button
                                 onClick={onAddFieldClick}
-                                className="mt-6 justify-center rounded-lg text-black bg-infinitea-orange px-3 py-1.5 font-semibold shadow transition hover:scale-103 active:scale-97"
+                                className="mt-6 justify-center rounded-lg border-2 border-infinitea-orange px-3 py-1.5 font-semibold shadow transition hover:scale-103 active:scale-97"
                             >
                                 {i18n.t('Add Field')}
                             </button>
@@ -190,6 +271,7 @@ const Registration = (props: RegistrationProps) => {
 }
 
 interface Props {
+    guildId: DiscordGuild['id'];
     config: SupabaseGuildConfig['registration'];
 }
 
@@ -210,7 +292,7 @@ export default (props: Props) => {
             {registrations.length > 0 && (
                 <div className="flex flex-col gap-6">
                     {registrations.map((registration) => (
-                        <Registration registration={registration} />
+                        <Registration guildId={props.guildId} registration={registration} />
                     ))}
                 </div>
             )}

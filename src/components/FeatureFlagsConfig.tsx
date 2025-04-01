@@ -59,15 +59,13 @@ const FlagConfig = (props: FlagConfigProps) => {
 export default (props: Props) => {
     const onFlagChange = async (id: keyof NonNullable<Props['config']>, value: boolean) => {
         // TODO: move api calls to an API util (move all calls)
-        const putConfig = () => fetch(`/guilds/${props.guildId}/config`, {
+        const putConfig = () => fetch(`/guilds/${props.guildId}/config/featureFlags`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                featureFlags: {
-                    [id]: value,
-                },
+                [id]: value,
             }),
         });
 

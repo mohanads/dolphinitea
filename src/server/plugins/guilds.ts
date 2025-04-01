@@ -22,7 +22,28 @@ const schemas = {
         text_xp: t.Optional(t.Boolean()),
         voice_xp: t.Optional(t.Boolean()),
         created_at: t.Optional(t.String())
-    })
+    }),
+    registration: t.Object({
+        registration_embed_title: t.Required(t.String()),
+        registration_embed_footer: t.Required(t.String()),
+        dm_approval_title: t.Required(t.String()),
+        dm_approval_body: t.Required(t.String()),
+        game_name: t.Required(t.String()),
+        dm_delay_title: t.Required(t.String()),
+        dm_delay_body: t.Required(t.String()),
+        dm_registered_title: t.Required(t.String()),
+        dm_registered_body: t.Required(t.String()),
+        registration_embed_body: t.Required(t.String()),
+        log_channel_url: t.Optional(t.Union([t.Null(), t.String()])),
+        registration_channel_url: t.Optional(t.Union([t.Null(), t.String()])),
+        dm_approval_footer: t.Optional(t.Union([t.Null(), t.String()])),
+        dm_delay_footer: t.Optional(t.Union([t.Null(), t.String()])),
+        dm_registered_footer: t.Optional(t.Union([t.Null(), t.String()])),
+        utility_role_id: t.Optional(t.Union([t.Null(), t.BigInt()])),
+        fields: t.Optional(t.Array(t.Object({
+            field_title: t.Required(t.String()),
+        }))),
+    }),
 };
 
 export default () => new Elysia()
@@ -133,7 +154,7 @@ export default () => new Elysia()
                 return render({ ...context.session, featureFlags: context.featureFlags }, context.request.url);
             })
             .group('/:id', (app) => {
-                // ensure guild has bot
+                // TODO: ensure guild has bot
                 // ensure user is in this guild
                 // ensure user has the necessary role in this guild (admin)
                 return app
@@ -170,50 +191,36 @@ export default () => new Elysia()
                         context.set.headers = { 'Content-Type': 'text/html' };
                         return render({ ...context.session, guild: userGuild, guildConfig: await guildConfig, featureFlags: context.featureFlags }, context.request.url);
                     })
-                    .put('/config', async (context: Context & { session: ISession; featureFlags: Record<FeatureFlag, unknown>; }) => {
+                    .put('/config/featureFlags', async (context: Context & { session: ISession; featureFlags: Record<FeatureFlag, unknown>; }) => {
                         // put config in db
                         const { id } = context.params;
 
                         // TODO: validate via JSONSchema
-                        if (!('featureFlags' in context.body)) throw new Errors.LoadedError(Errors.Code.INVALID_CONFIG_UPDATE);
-
-                        if (!context.session.userGuilds) {
-                            logger.warn('User Guilds are not loaded for updating Config', {
-                                userId: context.session.user?.id,
+                        if (!context.body) {
+                            logger.error('Tried updating Feature Flags with invalid body', {
                                 guildId: id,
+                                body: context.body,
                             });
-                            const userGuilds = await DiscordClient.getUserGuilds(context.session.discordAccessToken!);
-                            context.session.userGuilds = userGuilds;
-                            await CacheClient.set(`SESSION:${context.session.sessionToken}`, context.session);
-                            logger.info("Fetched user guilds and cached them for Config update");
+                            throw new Errors.LoadedError(Errors.Code.INVALID_CONFIG_UPDATE);
                         }
 
-                        const userGuild = context.session.userGuilds?.find((guild) => guild.id === id);
-                        const isUserInGuild = !!userGuild;
-                        if (!isUserInGuild) {
-                            logger.warn('User tried updating unauthorized Guild for Config update', {
-                                userId: context.session.user?.id,
+                        await SupabaseClient.putFeatureFlags(id, context.body);
+                    }, { body: schemas.featureFlags })
+                    .put('/config/registration', async (context: Context & { session: ISession; featureFlags: Record<FeatureFlag, unknown>; }) => {
+                        // put config in db
+                        const { id } = context.params;
+
+                        // TODO: validate via JSONSchema
+                        if (!context.body) {
+                            logger.error('Tried updating Registration Config with invalid body', {
                                 guildId: id,
+                                body: context.body,
                             });
-                            context.set.headers = { 'Content-Type': 'text/html' };
-                            return render({ ...context.session, featureFlags: context.featureFlags }, context.request.url);
+                            throw new Errors.LoadedError(Errors.Code.INVALID_CONFIG_UPDATE);
                         }
 
-                        const isUserAuthorized = (BigInt(userGuild.permissions) & BigInt(1 << 3)) === BigInt(1 << 3);
-                        if (!isUserAuthorized) {
-                            logger.warn('User tried updating Config of a guild without sufficient permissions', {
-                                userId: context.session.user?.id,
-                                guildId: id,
-                            });
-                            context.set.headers = { 'Content-Type': 'text/html' };
-                            return render({ ...context.session, featureFlags: context.featureFlags }, context.request.url);
-                        }
-
-                        await SupabaseClient.putFeatureFlags(id, context.body.featureFlags);
-                    }, {
-                        body: t.Object({
-                            featureFlags: schemas.featureFlags,
-                        })
-                    });
+                        await SupabaseClient.putRegistration(id, context.body as any); // TODO: remove any
+                        return {};
+                    }, { body: schemas.registration });
             });
     });
