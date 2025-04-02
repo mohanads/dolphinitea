@@ -1,3 +1,9 @@
+import { $ } from 'bun';
+
+await $`bun build:css`;
+await $`bun build:client`;
+
+import './env';
 import { Elysia } from 'elysia';
 import { staticPlugin } from '@elysiajs/static';
 import { logger } from '../logger';
