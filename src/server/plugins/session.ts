@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia';
-import { logger } from '../../logger';
+import { logger } from '../logger';
 import CacheClient from '../../clients/cache';
 import type { ISession } from '../../state';
 

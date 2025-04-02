@@ -1,7 +1,7 @@
 import Elysia from 'elysia';
 import { i18n } from '@lingui/core';
 import * as Language from '../../language';
-import { logger } from '../../logger';
+import { logger } from '../logger';
 
 enum Locale {
     en = "en",

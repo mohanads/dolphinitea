@@ -1,6 +1,6 @@
 import * as LaunchDarkly from '@launchdarkly/node-server-sdk';
 import * as Errors from '../errors';
-import { logger } from '../logger';
+import { logger } from '../server/logger';
 
 export enum FeatureFlag {
     FeatureFlagConfigKillSwitch = 'feature-flags-config-kill-switch',

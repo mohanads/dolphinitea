@@ -6,7 +6,7 @@ await $`bun build:client`;
 import './env';
 import { Elysia } from 'elysia';
 import { staticPlugin } from '@elysiajs/static';
-import { logger } from '../logger';
+import { logger } from './logger';
 import staticPages from './plugins/staticPages';
 import auth from './plugins/auth';
 import guilds from './plugins/guilds';

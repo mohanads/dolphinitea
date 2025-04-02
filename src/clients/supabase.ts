@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import * as Errors from '../errors';
-import { logger } from '../logger';
+import { logger } from '../server/logger';
 import type { Database } from '../database.types';
 
 type Tables = Database['public']['Tables'];

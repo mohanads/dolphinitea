@@ -2,7 +2,7 @@ import { h } from 'preact';
 import Elysia, { Context } from 'elysia';
 import CacheClient from '../../clients/cache';
 import DiscordClient from '../../clients/discord';
-import { logger } from '../../logger';
+import { logger } from '../logger';
 import render from '../render';
 import { ISession } from '../../state';
 import { FeatureFlag } from '../../clients/launchDarkly';

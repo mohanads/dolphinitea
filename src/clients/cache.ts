@@ -1,6 +1,6 @@
 import { createClient } from 'redis';
 import * as Errors from '../errors';
-import { logger } from '../logger';
+import { logger } from '../server/logger';
 
 export type SerializablePrimitive = string | number | boolean;
 export type SerializableArray = string[] | number[] | boolean[]

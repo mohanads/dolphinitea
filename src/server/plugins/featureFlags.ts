@@ -1,5 +1,5 @@
 import { type Context, Elysia } from 'elysia';
-import { logger } from '../../logger';
+import { logger } from '../logger';
 import LaunchDarklyClient, { type FeatureFlag } from '../../clients/launchDarkly';
 import { type ISession } from '../../state';
 

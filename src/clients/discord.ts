@@ -1,5 +1,5 @@
 import * as Errors from '../errors';
-import { logger } from '../logger';
+import { logger } from '../server/logger';
 
 export class DiscordClient {
     private apiUrl: string;

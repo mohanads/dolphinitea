@@ -1,5 +1,5 @@
 import { Context, Elysia, t } from 'elysia';
-import { logger } from '../../logger';
+import { logger } from '../logger';
 import CacheClient from '../../clients/cache';
 import DiscordClient, { DiscordGuild } from '../../clients/discord';
 import render from '../render';
