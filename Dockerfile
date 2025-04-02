@@ -7,4 +7,5 @@ COPY lingui.config.js ./
 COPY package.json ./
 COPY tsconfig.json ./
 RUN bun install
+RUN bun build:locale:compile
 CMD ["bun", "run", "server:start"]
