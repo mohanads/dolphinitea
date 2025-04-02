@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks';
 import { AnimatePresence, motion } from 'motion/react';
 import { i18n } from '@lingui/core';
 import { Icon } from '@iconify/react';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { SupabaseGuildConfig } from '../clients/supabase';
 import Tabs from './Tabs';
 import { DiscordGuild } from '../clients/discord';
@@ -184,7 +184,7 @@ const Registration = (props: RegistrationProps) => {
         };
 
         toast.promise(putRegistration(props.guildId, payload), {
-            pending: i18n.t('Syncing config...'),
+            loading: i18n.t('Syncing config...'),
             success: i18n.t('Config synced!'),
             error: i18n.t('Sync failed!'),
         });

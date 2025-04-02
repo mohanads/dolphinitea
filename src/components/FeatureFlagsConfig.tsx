@@ -1,7 +1,7 @@
-import { toast } from 'react-toastify';
+import { i18n } from '@lingui/core';
+import toast from 'react-hot-toast';
 import { DiscordGuild } from '../clients/discord';
 import { SupabaseGuildConfig } from '../clients/supabase';
-import { i18n } from '@lingui/core';
 
 interface Props {
     guildId: DiscordGuild['id'];
@@ -70,7 +70,7 @@ export default (props: Props) => {
         });
 
         toast.promise(putConfig, {
-            pending: i18n.t('Syncing config...'),
+            loading: i18n.t('Syncing config...'),
             success: i18n.t('Config synced!'),
             error: i18n.t('Sync failed!'),
         });

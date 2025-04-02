@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import Router from 'preact-router';
+import { Toaster } from 'react-hot-toast';
 import '../index.css';
 import { State, IState, createState } from '../state';
 import * as Pages from '../pages';
-import { ToastContainer } from 'react-toastify';
 
 export const pages = [
     {
@@ -42,7 +42,7 @@ export default (props: Props) => {
 
     return (
         <State.Provider value={state}>
-            <ToastContainer position='bottom-center' theme='dark' autoClose={2000} stacked />
+            <Toaster position="bottom-center" />
             {state.error && <Pages.Error />}
             {state.unauthorized && <Pages.Unauthorized />}
             {!state.error && !state.unauthorized && (
