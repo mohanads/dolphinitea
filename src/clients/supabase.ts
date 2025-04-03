@@ -11,7 +11,7 @@ export interface SupabaseGuildConfig {
     amp?: Pick<Tables['amp_configuration']['Row'], 'controller_url' | 'bot_password' | 'bot_username' | 'created_at'> | null;
     starboard?: Pick<Tables['starboard_configuration']['Row'], 'created_at' | 'reaction' | 'required_reactions' | 'updated_at'> | null;
     memberActivity?: Pick<Tables['member_activity_configuration']['Row'], 'create_vc_channel_name' | 'created_at' | 'in_voice_channel_name' | 'member_count_channel_name' | 'updated_at'> | null;
-    registration?: (Pick<Tables['registration_config']['Row'], 'dm_approval_body' | 'dm_approval_footer' | 'dm_approval_title' | 'dm_delay_body' | 'dm_delay_footer' | 'dm_delay_title' | 'dm_registered_body' | 'dm_registered_footer' | 'dm_registered_title' | 'game_name' | 'guild_id' | 'log_channel_url' | 'registration_channel_url' | 'registration_embed_body' | 'registration_embed_footer' | 'registration_embed_title'> & { fields: Pick<Tables['registration_field']['Row'], 'field_title'>[] })[] | null;
+    registration?: (Pick<Tables['registration_config']['Row'], 'dm_approval_body' | 'dm_approval_footer' | 'dm_approval_title' | 'dm_delay_body' | 'dm_delay_footer' | 'dm_delay_title' | 'dm_registered_body' | 'dm_registered_footer' | 'dm_registered_title' | 'game_name' | 'log_channel_url' | 'registration_channel_url' | 'registration_embed_body' | 'registration_embed_footer' | 'registration_embed_title'> & { fields: Pick<Tables['registration_field']['Row'], 'field_title'>[] })[] | null;
     featureFlags?: Pick<Tables['feature_flag_configuration']['Row'], 'create_vc' | 'giveaway' | 'in_voice_count' | 'member_count' | 'purge' | 'reputation_tracking' | 'starboard' | 'status' | 'temp_message' | 'text_xp' | 'voice_xp' | 'created_at'> | null;
 }
 
@@ -56,7 +56,7 @@ export class SupabaseClient {
                 memberActivity:member_activity_configuration (create_vc_channel_name, created_at, in_voice_channel_name, member_count_channel_name, updated_at),
                 registration:registration_config (dm_approval_body, dm_approval_footer, dm_approval_title, dm_delay_body, dm_delay_footer, dm_delay_title, dm_registered_body, dm_registered_footer, dm_registered_title, game_name, guild_id, log_channel_url, registration_channel_url, registration_embed_body, registration_embed_footer, registration_embed_title, fields:registration_field(field_title))
             `)
-            .eq('guild_id', Number(guildId))
+            .eq('guild_id', BigInt(guildId) as any)
             .maybeSingle();
 
         if (error) {
@@ -73,7 +73,7 @@ export class SupabaseClient {
         const { data, error } = await this.supabase
             .from('configuration')
             .select(`id`)
-            .eq('guild_id', Number(guildId))
+            .eq('guild_id', BigInt(guildId) as any)
             .maybeSingle();
 
         if (error) {
@@ -150,7 +150,7 @@ export class SupabaseClient {
         }
 
         const insert = {
-            guild_id: Number(guildId),
+            guild_id: guildId as any,
             game_name: registration.game_name,
             dm_approval_title: registration.dm_approval_title,
             dm_approval_body: registration.dm_approval_body,
@@ -168,7 +168,7 @@ export class SupabaseClient {
             registration_channel_url: registration.registration_channel_url as any,
             fields: registration.fields?.map((field) => ({
                 field_title: field.field_title,
-                guild_id: Number(guildId),
+                guild_id: guildId,
                 game_name: registration.game_name,
             })),
         };
