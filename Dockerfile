@@ -1,4 +1,4 @@
-FROM oven/bun:1.2.4
+FROM oven/bun:1.2.8
 WORKDIR /app
 COPY public public
 COPY src src
