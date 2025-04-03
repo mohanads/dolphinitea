@@ -131,6 +131,7 @@ const DelayMessageConfig = (props: DelayMessageConfigProps) => {
 interface RegistrationProps {
     guildId: DiscordGuild['id'];
     registration: NonNullable<SupabaseGuildConfig['registration']>[number];
+    editable: boolean;
 }
 
 const Registration = (props: RegistrationProps) => {
@@ -210,14 +211,15 @@ const Registration = (props: RegistrationProps) => {
         <section className="bg-discord-black-80 rounded-lg shadow-xl py-6">
             <div className="w-full flex px-6">
                 <input
+                    disabled={!props.editable}
                     value={data.game_name}
                     onChange={onGameNameChange}
                     placeholder={i18n.t('Untitled')}
                     className="bg-discord-black-70 text-sm rounded-lg block p-2.5"
                 />
                 <div className="ml-4 w-full flex gap-4 items-center">
-                    <button onClick={toggle} className="ml-auto cursor-pointer">
-                        <Icon className="text-infinitea-orange" icon={open ? "solar:eye-bold" : "solar:eye-closed-bold"} width="24" height="24" />
+                    <button onClick={toggle} className="ml-auto cursor-pointer bg-infinitea-orange rounded-lg p-1.5 text-black">
+                        <Icon icon={open ? "solar:alt-arrow-down-linear" : "solar:alt-arrow-up-linear"} width="24" height="24" />
                     </button>
                     <button
                         onClick={onSaveClick}
@@ -283,6 +285,7 @@ export default (props: Props) => {
             ...registrations,
             {
                 fields: [],
+                editable: true,
             } as any // TODO: remove this any
         ]);
     };
@@ -292,7 +295,7 @@ export default (props: Props) => {
             {registrations.length > 0 && (
                 <div className="flex flex-col gap-6">
                     {registrations.map((registration) => (
-                        <Registration guildId={props.guildId} registration={registration} />
+                        <Registration guildId={props.guildId} registration={registration} editable={(registration as any).editable} /> // TODO: remove this any
                     ))}
                 </div>
             )}
