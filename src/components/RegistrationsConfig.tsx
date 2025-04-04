@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { i18n } from '@lingui/core';
 import { Icon } from '@iconify/react';
 import toast from 'react-hot-toast';
+import { v4 as uuid } from 'uuid';
 import { SupabaseGuildConfig } from '../clients/supabase';
 import Tabs from './Tabs';
 import { DiscordGuild } from '../clients/discord';
@@ -137,7 +138,7 @@ interface RegistrationProps {
 const Registration = (props: RegistrationProps) => {
     const [data, setData] = useState(props.registration);
     const [fields, setFields] = useState(props.registration.fields.reduce((acc, field) => {
-        const id = self.crypto.randomUUID();
+        const id = uuid();
         return { ...acc, [id]: { ...field, id } };
     }, {} as Record<string, RegistrationProps['registration']['fields'][number] & { id: string; }>));
     const [open, setOpen] = useState(true);
@@ -170,7 +171,7 @@ const Registration = (props: RegistrationProps) => {
 
     const onAddFieldClick = () => {
         setFields((fields) => {
-            const id = self.crypto.randomUUID();
+            const id = uuid();
             return {
                 ...fields,
                 [id]: { id, field_title: '' },

@@ -26,7 +26,8 @@
         "react": "npm:@preact/compat",
         "react-dom": "npm:@preact/compat",
         "react-hot-toast": "^2.5.2",
-        "redis": "^4.7.0"
+        "redis": "^4.7.0",
+        "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@iconify/react": "^5.2.0",
